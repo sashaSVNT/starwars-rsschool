@@ -35,10 +35,14 @@ class App extends Component<object, AppState> {
     }
   };
 
-  onSearch = (e: FormEvent<HTMLFormElement>) => {
+  onSearchSubmit = async (e: FormEvent<HTMLFormElement>) => {
     if (e.target instanceof HTMLFormElement) {
       e.preventDefault();
-      localStorage.setItem('searchValue', this.state.searchValue);
+      this.setState({ loading: true });
+      const value = this.state.searchValue.trim();
+      localStorage.setItem('searchValue', value);
+      const response = await swapiService.getAllPeople(value);
+      this.setState({ people: response, searchValue: value, loading: false });
     }
   };
 
@@ -53,7 +57,7 @@ class App extends Component<object, AppState> {
     return (
       <div className={styles.wrapper}>
         <div className={styles.topControls}>
-          <form onSubmit={this.onSearch}>
+          <form onSubmit={this.onSearchSubmit}>
             <input
               type="text"
               onChange={this.onSearchChange}

@@ -17,10 +17,9 @@ class SwapiService {
 
   public getAllPeople = async (searchWord: string) => {
     const searchQuery = searchWord
-      ? `people?name=${encodeURIComponent(searchWord)}&page=1&limit=${this.limitOfRecords}&expanded=true`
+      ? `people?name=${searchWord}&page=1&limit=${this.limitOfRecords}&expanded=true`
       : `people?page=1&limit=${this.limitOfRecords}&expanded=true`;
     const res: ApiResponse = await this.getResource(searchQuery);
-    console.log(res);
     if (res.results) {
       return res.results;
     } else if (res.result) {
