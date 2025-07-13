@@ -1,0 +1,28 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 10px;
+}
+
+.name {
+  flex: 1;
+}
+
+.attributes {
+  border-collapse: collapse;
+}
+
+table {
+  border: 2px solid rgb(140 140 140);
+}
+
+th,
+td {
+  padding: 5px 10px;
+  border: 1px solid rgb(160 160 160);
+}
+
+td {
+  text-align: center;
+}
