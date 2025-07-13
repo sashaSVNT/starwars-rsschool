@@ -1,6 +1,11 @@
 .wrapper {
 }
 
+.cardsContainer {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 .spinnerContainer {
   position: fixed;
   top: 0;

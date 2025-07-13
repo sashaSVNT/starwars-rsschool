@@ -3,7 +3,7 @@ import type { ApiResponse } from '../types/apiResponse.type';
 
 class SwapiService {
   private basePath = 'https://www.swapi.tech/api/';
-  private limitOfRecords = 7;
+  private limitOfRecords = 8;
 
   private getResource = async (url: string) => {
     const res = await fetch(`${this.basePath}${url}`);
@@ -15,11 +15,19 @@ class SwapiService {
     return await res.json();
   };
 
-  public getAllPeople = async (page: number) => {
-    const res: ApiResponse = await this.getResource(
-      `/people?page=${page}&limit=${this.limitOfRecords}&expanded=true`
-    );
-    return res.results;
+  public getAllPeople = async (searchWord: string) => {
+    const searchQuery = searchWord
+      ? `people?name=${encodeURIComponent(searchWord)}&page=1&limit=${this.limitOfRecords}&expanded=true`
+      : `people?page=1&limit=${this.limitOfRecords}&expanded=true`;
+    const res: ApiResponse = await this.getResource(searchQuery);
+    console.log(res);
+    if (res.results) {
+      return res.results;
+    } else if (res.result) {
+      return res.result;
+    } else {
+      return [];
+    }
   };
 }
 
