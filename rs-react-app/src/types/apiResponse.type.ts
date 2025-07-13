@@ -4,5 +4,6 @@ export type ApiResponse = {
   message: string;
   next: string;
   previous: string;
-  results: PersonResult[];
+  results?: PersonResult[];
+  result?: PersonResult[];
 };

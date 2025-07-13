@@ -6,6 +6,7 @@ interface CardProps {
   birthYear: string;
   eyeColor: string;
   gender: string;
+  height: string;
 }
 
 export default class Card extends Component<CardProps> {
@@ -23,7 +24,9 @@ export default class Card extends Component<CardProps> {
         <table className={styles.attributes}>
           <tr>
             {Object.keys(attributes).map((el, i) => (
-              <th key={i}>{this.formatKey(el)}</th>
+              <th key={i} style={{ backgroundColor: '#57c7ff' }}>
+                {this.formatKey(el)}
+              </th>
             ))}
           </tr>
           <tr>

@@ -21,7 +21,7 @@ class App extends Component<object, AppState> {
   }
 
   async componentDidMount(): Promise<void> {
-    const response = await swapiService.getAllPeople(1);
+    const response = await swapiService.getAllPeople(this.state.searchValue);
     this.setState((prevState) => ({
       searchValue: prevState.searchValue,
       people: response,
