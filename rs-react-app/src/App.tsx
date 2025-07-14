@@ -2,7 +2,8 @@ import { Component, type ChangeEvent, type FormEvent } from 'react';
 import styles from './App.module.css';
 import { swapiService } from './services/swapiService';
 import type { PersonResult } from './types/personResult.type';
-import Card from './card';
+import Card from './components/card';
+import Spinner from './components/spinner';
 
 interface AppState {
   people: PersonResult[];
@@ -51,21 +52,19 @@ class App extends Component<object, AppState> {
     if (loading)
       return (
         <div className={styles.spinnerContainer}>
-          <div className={styles.spinner}></div>
+          <Spinner />
         </div>
       );
     return (
       <div className={styles.wrapper}>
-        <div className={styles.topControls}>
-          <form onSubmit={this.onSearchSubmit}>
-            <input
-              type="text"
-              onChange={this.onSearchChange}
-              value={this.state.searchValue}
-            />
-            <button>Search</button>
-          </form>
-        </div>
+        <form className={styles.topControls} onSubmit={this.onSearchSubmit}>
+          <input
+            type="text"
+            onChange={this.onSearchChange}
+            value={this.state.searchValue}
+          />
+          <button>Search</button>
+        </form>
         <div className={styles.cardsContainer}>
           {people.map((el) => {
             const { name, birth_year, eye_color, gender, height } =
