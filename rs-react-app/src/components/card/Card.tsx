@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import styles from './Card.module.css';
+import formatKey from '../../utils/formatKey';
 
 interface CardProps {
   name: string;
@@ -10,12 +11,6 @@ interface CardProps {
 }
 
 export default class Card extends Component<CardProps> {
-  formatKey = (key: string): string => {
-    return key
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, (str) => str.toUpperCase());
-  };
-
   render() {
     const { name, ...attributes } = this.props;
     return (
@@ -25,7 +20,7 @@ export default class Card extends Component<CardProps> {
           <tr>
             {Object.keys(attributes).map((el, i) => (
               <th key={i} style={{ backgroundColor: '#57c7ff' }}>
-                {this.formatKey(el)}
+                {formatKey(el)}
               </th>
             ))}
           </tr>
