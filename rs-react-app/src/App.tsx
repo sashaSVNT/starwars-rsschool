@@ -1,9 +1,10 @@
-import { Component, type ChangeEvent, type FormEvent } from 'react';
+import { Component } from 'react';
 import styles from './App.module.css';
 import { swapiService } from './services/swapiService';
 import type { PersonResult } from './types/personResult.type';
-import Card from './components/card';
 import Spinner from './components/spinner';
+import Search from './components/search';
+import CardsList from './components/cardsList';
 
 interface AppState {
   people: PersonResult[];
@@ -30,21 +31,16 @@ class App extends Component<object, AppState> {
     }));
   }
 
-  onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target instanceof HTMLInputElement) {
-      this.setState({ searchValue: e.target.value });
-    }
+  onSearchChange = (value: string) => {
+    this.setState({ searchValue: value });
   };
 
-  onSearchSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    if (e.target instanceof HTMLFormElement) {
-      e.preventDefault();
-      this.setState({ loading: true });
-      const value = this.state.searchValue.trim();
-      localStorage.setItem('searchValue', value);
-      const response = await swapiService.getAllPeople(value);
-      this.setState({ people: response, searchValue: value, loading: false });
-    }
+  onSearchSubmit = async () => {
+    this.setState({ loading: true });
+    const value = this.state.searchValue.trim();
+    localStorage.setItem('searchValue', value);
+    const response = await swapiService.getAllPeople(value);
+    this.setState({ people: response, searchValue: value, loading: false });
   };
 
   render() {
@@ -57,30 +53,12 @@ class App extends Component<object, AppState> {
       );
     return (
       <div className={styles.wrapper}>
-        <form className={styles.topControls} onSubmit={this.onSearchSubmit}>
-          <input
-            type="text"
-            onChange={this.onSearchChange}
-            value={this.state.searchValue}
-          />
-          <button>Search</button>
-        </form>
-        <div className={styles.cardsContainer}>
-          {people.map((el) => {
-            const { name, birth_year, eye_color, gender, height } =
-              el.properties;
-            return (
-              <Card
-                key={name}
-                name={name}
-                birthYear={birth_year}
-                eyeColor={eye_color}
-                gender={gender}
-                height={height}
-              />
-            );
-          })}
-        </div>
+        <Search
+          onSearchSubmit={this.onSearchSubmit}
+          onSearchChange={this.onSearchChange}
+          searchValue={this.state.searchValue}
+        />
+        <CardsList data={people} />
       </div>
     );
   }
