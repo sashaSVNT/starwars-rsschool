@@ -2,3 +2,8 @@
   max-width: 900px;
   margin: 0 auto;
 }
+
+.noData {
+  text-align: center;
+  font-size: 30px;
+}

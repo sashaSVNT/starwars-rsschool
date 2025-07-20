@@ -11,19 +11,24 @@ class CardsList extends Component<CardsListProps> {
   render() {
     return (
       <div className={styles.cardsContainer}>
-        {this.props.data.map((el) => {
-          const { name, birth_year, eye_color, gender, height } = el.properties;
-          return (
-            <Card
-              key={name}
-              name={name}
-              birthYear={birth_year}
-              eyeColor={eye_color}
-              gender={gender}
-              height={height}
-            />
-          );
-        })}
+        {this.props.data.length ? (
+          this.props.data.map((el) => {
+            const { name, birth_year, eye_color, gender, height } =
+              el.properties;
+            return (
+              <Card
+                key={name}
+                name={name}
+                birthYear={birth_year}
+                eyeColor={eye_color}
+                gender={gender}
+                height={height}
+              />
+            );
+          })
+        ) : (
+          <div className={styles.noData}>no results</div>
+        )}
       </div>
     );
   }
