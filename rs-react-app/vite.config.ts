@@ -23,9 +23,11 @@ export default defineConfig({
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: [
         'src/**/*.test.{js,jsx,ts,tsx}',
+        'src/**/*.test.{js,jsx,ts,tsx}',
         'src/**/*.spec.{js,jsx,ts,tsx}',
-        'src/index.{js,jsx,ts,tsx}',
+        'src/components/**/index.{js,jsx,ts,tsx}',
         'src/testsSetup.{js,ts}',
+        'src/types/*.type.{tsx,ts}',
         'src/**/*.d.ts',
       ],
       reporter: ['text', 'json', 'html'],
