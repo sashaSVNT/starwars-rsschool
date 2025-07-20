@@ -1,34 +1,6 @@
 .wrapper {
 }
 
-.topControls {
-  display: flex;
-  gap: 10px;
-  max-width: 900px;
-  margin: 0 auto;
-  padding-top: 20px;
-  input,
-  button {
-    height: 35px;
-    border: 1px solid rgb(156, 156, 156);
-    border-radius: 4px;
-  }
-}
-
-.topControls button {
-  padding: 5px 15px;
-  font-family: 'Orbitron', sans-serif;
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.topControls input {
-  padding: 5px;
-  width: 50%;
-  font-size: 20px;
-}
-
 .cardsContainer {
   max-width: 900px;
   margin: 0 auto;
