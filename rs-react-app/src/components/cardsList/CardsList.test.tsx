@@ -44,8 +44,12 @@ describe('CardsList tests', () => {
 
   test('display all cards', () => {
     render(<CardsList data={data} />);
-
     const cards = screen.queryAllByTestId('card');
     expect(cards.length).toBe(data.length);
+  });
+
+  test('no results', () => {
+    render(<CardsList data={[]} />);
+    expect(screen.getByText('no results')).toBeInTheDocument();
   });
 });
