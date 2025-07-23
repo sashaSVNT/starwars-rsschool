@@ -31,6 +31,9 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 describe('App Component Tests', () => {
+  test('renders app without crashing', () => {
+    render(<App />);
+  });
   const mockPeople: PersonResult[] = [
     {
       description: 'Person',
