@@ -25,7 +25,7 @@ class SwapiService {
     } else if (res.result) {
       return res.result;
     } else {
-      return [];
+      throw new Error(`${res.message}`);
     }
   };
 }
