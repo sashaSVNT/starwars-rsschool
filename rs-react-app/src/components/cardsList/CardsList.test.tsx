@@ -3,17 +3,16 @@ import type { PersonResult } from '../../types/personResult.type';
 import CardsList from './CardsList';
 
 vi.mock('../card/Card', () => ({
-  default: vi.fn().mockImplementation((props) => (
-    <div data-testid="card">
-      {Object.values(props).map((el, i) => (
-        <div key={i}>{String(el)}</div>
-      ))}
+  default: vi.fn(({ name, birthYear }) => (
+    <div data-testid="mock-card">
+      <h2>{name}</h2>
+      <div>{birthYear}</div>
     </div>
   )),
 }));
 
-describe('CardsList tests', () => {
-  const data: PersonResult[] = [
+describe('CardList Component Tests', () => {
+  const mockData: PersonResult[] = [
     {
       description: 'Main character',
       properties: {
@@ -42,14 +41,35 @@ describe('CardsList tests', () => {
     },
   ];
 
-  test('display all cards', () => {
-    render(<CardsList data={data} />);
-    const cards = screen.queryAllByTestId('card');
-    expect(cards.length).toBe(data.length);
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  test('no results', () => {
-    render(<CardsList data={[]} />);
-    expect(screen.getByText('no results')).toBeInTheDocument();
+  describe('Rendering Tests', () => {
+    test('Renders correct number of items when data is provided', () => {
+      render(<CardsList data={mockData} loading={false} />);
+      const cards = screen.queryAllByTestId('mock-card');
+      expect(cards.length).toBe(mockData.length);
+    });
+
+    test('Displays "no results" message when data array is empty', () => {
+      render(<CardsList data={[]} loading={false} />);
+      expect(screen.getByText('no results')).toBeInTheDocument();
+    });
+
+    test('Shows loading state while fetching data', () => {
+      render(<CardsList data={[]} loading={true} />);
+      expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    });
+  });
+
+  describe('Data Display Tests', () => {
+    test('Correctly displays item names and descriptions', () => {
+      render(<CardsList data={mockData} loading={false} />);
+      expect(screen.getByText('Test Skywalker')).toBeInTheDocument();
+      expect(screen.getByText('30BBY')).toBeInTheDocument();
+      expect(screen.getByText('Test Organa')).toBeInTheDocument();
+      expect(screen.getByText('29BBY')).toBeInTheDocument();
+    });
   });
 });
