@@ -17,18 +17,22 @@ export default class Card extends Component<CardProps> {
       <div className={styles.card}>
         <h2 className={styles.name}>{name}</h2>
         <table className={styles.attributes}>
-          <tr>
-            {Object.keys(attributes).map((el, i) => (
-              <th key={i} style={{ backgroundColor: '#57c7ff' }}>
-                {formatKey(el)}
-              </th>
-            ))}
-          </tr>
-          <tr>
-            {Object.values(attributes).map((el, i) => (
-              <td key={i}>{el}</td>
-            ))}
-          </tr>
+          <thead>
+            <tr>
+              {Object.keys(attributes).map((el, i) => (
+                <th key={i} style={{ backgroundColor: '#57c7ff' }}>
+                  {formatKey(el)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {Object.values(attributes).map((el, i) => (
+                <td key={i}>{el}</td>
+              ))}
+            </tr>
+          </tbody>
         </table>
       </div>
     );

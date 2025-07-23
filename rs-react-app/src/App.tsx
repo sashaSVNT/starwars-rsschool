@@ -2,7 +2,6 @@ import { Component } from 'react';
 import styles from './App.module.css';
 import { swapiService } from './services/swapiService';
 import type { PersonResult } from './types/personResult.type';
-import Spinner from './components/spinner';
 import Search from './components/search';
 import CardsList from './components/cardsList';
 
@@ -45,12 +44,6 @@ class App extends Component<object, AppState> {
 
   render() {
     const { people, loading } = this.state;
-    if (loading)
-      return (
-        <div className={styles.spinnerContainer}>
-          <Spinner />
-        </div>
-      );
     return (
       <div className={styles.wrapper}>
         <Search
@@ -58,7 +51,7 @@ class App extends Component<object, AppState> {
           onSearchChange={this.onSearchChange}
           searchValue={this.state.searchValue}
         />
-        <CardsList data={people} />
+        <CardsList data={people} loading={loading} />
       </div>
     );
   }

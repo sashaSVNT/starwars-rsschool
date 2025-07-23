@@ -3,7 +3,7 @@ import styles from './search.module.css';
 
 type SearchProps = {
   onSearchChange: (value: string) => void;
-  onSearchSubmit: () => Promise<void>;
+  onSearchSubmit: () => void;
   searchValue: string;
 };
 
@@ -24,7 +24,11 @@ class Search extends Component<SearchProps> {
 
   render() {
     return (
-      <form className={styles.topControls} onSubmit={this.onSearchSubmit}>
+      <form
+        className={styles.topControls}
+        onSubmit={this.onSearchSubmit}
+        aria-label="Search form"
+      >
         <input
           type="text"
           onChange={this.onSearchChange}
