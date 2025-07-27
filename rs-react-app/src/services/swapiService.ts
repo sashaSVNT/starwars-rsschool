@@ -1,6 +1,7 @@
 import type {
   GetAllPeopleResponse,
   GetPeopleByQueryResponse,
+  GetPersonByIdResponse,
 } from '../types/apiResponse.type';
 // import type { Person } from '../types/person.type';
 
@@ -32,6 +33,16 @@ class SwapiService {
   public getPeopleByQuery = async (searchWord: string) => {
     const searchQuery = `people?name=${searchWord}`;
     const res: GetPeopleByQueryResponse = await this.getResource(searchQuery);
+    if (res.message === 'ok') {
+      return res;
+    } else {
+      throw new Error(`${res.message}`);
+    }
+  };
+
+  public getPersonById = async (id: string) => {
+    const searchQuery = `people/${id}/`;
+    const res: GetPersonByIdResponse = await this.getResource(searchQuery);
     if (res.message === 'ok') {
       return res;
     } else {

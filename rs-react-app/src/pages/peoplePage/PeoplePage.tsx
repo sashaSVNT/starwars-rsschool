@@ -7,6 +7,7 @@ import CardsList from '../../components/cardsList';
 import useLocalStorage from '../../utils/useLocalStorage';
 import Pagination from '../../components/pagination';
 import { useNavigate, useParams } from 'react-router-dom';
+import PersonDetails from '../../components/personDetails';
 
 export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
@@ -58,6 +59,14 @@ export default function PeoplePage() {
     navigate(`/${newPage}${detailsId ? `/${detailsId}` : ''}`);
   };
 
+  const onSelectPerson = (id: string) => {
+    navigate(`/${currentPage}/${id}`);
+  };
+
+  const onCloseDetails = () => {
+    navigate(`/${currentPage}`);
+  };
+
   return (
     <div className={styles.wrapper}>
       <Search
@@ -65,7 +74,16 @@ export default function PeoplePage() {
         onSearchChange={onSearchChange}
         searchValue={searchValue}
       />
-      <CardsList data={people} isLoading={isLoading} />
+      <div className={styles.masterDetailView}>
+        <CardsList
+          data={people}
+          isLoading={isLoading}
+          onSelectPerson={onSelectPerson}
+        />
+        {detailsId && (
+          <PersonDetails id={detailsId} onCloseDetails={onCloseDetails} />
+        )}
+      </div>
       {!isLoading && (
         <Pagination
           currentPage={currentPage}
