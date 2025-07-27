@@ -17,17 +17,16 @@ class App extends Component<object, AppState> {
     this.state = {
       people: [],
       loading: true,
-      searchValue: localStorage.getItem('searchValue') || '',
+      searchValue: localStorage.getItem('searchValue') ?? '',
     };
   }
 
   async componentDidMount(): Promise<void> {
     const response = await swapiService.getAllPeople(this.state.searchValue);
-    this.setState((prevState) => ({
-      searchValue: prevState.searchValue,
+    this.setState({
       people: response,
       loading: false,
-    }));
+    });
   }
 
   onSearchChange = (value: string) => {

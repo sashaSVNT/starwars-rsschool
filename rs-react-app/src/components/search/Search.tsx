@@ -15,11 +15,9 @@ class Search extends Component<SearchProps> {
     }
   };
 
-  onSearchSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    if (e.target instanceof HTMLFormElement) {
-      e.preventDefault();
-      this.props.onSearchSubmit();
-    }
+  onSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    this.props.onSearchSubmit();
   };
 
   render() {
