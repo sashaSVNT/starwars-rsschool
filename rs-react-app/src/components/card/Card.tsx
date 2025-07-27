@@ -2,17 +2,20 @@ import styles from './Card.module.css';
 import formatPersonAttribute from '../../utils/formatPersonAttribute';
 
 type CardProps = {
+  id: string;
   name: string;
-  birthYear: string;
-  eyeColor: string;
+  birth_year: string;
+  eye_color: string;
   gender: string;
   height: string;
+  onSelectPerson: (id: string) => void;
 };
 
 export default function Card(props: CardProps) {
-  const { name, ...attributes } = props;
+  const { id, onSelectPerson, name, ...attributes } = props;
+  console.log(attributes);
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={() => onSelectPerson(id)}>
       <h2 className={styles.name}>{name}</h2>
       <table className={styles.attributes}>
         <thead>

@@ -6,6 +6,11 @@
   align-items: center;
   gap: 60px;
   padding: 10px;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: rgb(201, 201, 201);
 }
 
 .name {

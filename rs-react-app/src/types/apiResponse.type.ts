@@ -12,3 +12,8 @@ export type GetPeopleByQueryResponse = {
   message: string;
   result: PersonResult[];
 };
+
+export type GetPersonByIdResponse = {
+  message: string;
+  result: PersonResult;
+};

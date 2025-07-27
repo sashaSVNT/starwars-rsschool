@@ -11,8 +11,8 @@ vi.mock('../../utils/formatPersonAttribute', () => ({
 describe('Card tests', () => {
   const props = {
     name: 'Test Skywalker',
-    birthYear: '29BBY',
-    eyeColor: 'green',
+    birth_year: '29BBY',
+    eye_color: 'green',
     gender: 'male',
     height: '190',
   };
