@@ -11,7 +11,7 @@ export default function AppRoutes() {
   ];
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/starwars-rsschool">
       <Routes>
         {navigationRoutes.map((el, i) => (
           <Route key={i} path={el.path} element={el.element} />

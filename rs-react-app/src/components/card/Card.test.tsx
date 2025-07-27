@@ -15,6 +15,8 @@ describe('Card tests', () => {
     eye_color: 'green',
     gender: 'male',
     height: '190',
+    id: '1',
+    onSelectPerson: vi.fn(),
   };
 
   beforeEach(() => {

@@ -8,7 +8,7 @@ export default defineConfig({
       localsConvention: 'camelCase',
     },
   },
-  base: './',
+  base: '/starwars-rsschool/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

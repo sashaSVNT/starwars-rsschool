@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import styles from './pagination.module.css';
 
 type PaginationProps = {
@@ -12,12 +11,6 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
-  // const navigate = useNavigate();
-
-  // // const handlePageChange = (newPage: number) => {
-  // //   navigate(`?page=${newPage}`);
-  // // };
-
   return (
     <div className={styles.pagination}>
       <button
