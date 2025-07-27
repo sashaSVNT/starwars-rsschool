@@ -1,4 +1,4 @@
-import { Component, type ChangeEvent, type FormEvent } from 'react';
+import { type ChangeEvent, type FormEvent } from 'react';
 import styles from './search.module.css';
 
 type SearchProps = {
@@ -7,35 +7,31 @@ type SearchProps = {
   searchValue: string;
 };
 
-class Search extends Component<SearchProps> {
-  onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+export default function Search({
+  onSearchChange,
+  onSearchSubmit,
+  searchValue,
+}: SearchProps) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target instanceof HTMLInputElement) {
       const searchValue = e.target.value;
-      this.props.onSearchChange(searchValue);
+      onSearchChange(searchValue);
     }
   };
 
-  onSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.props.onSearchSubmit();
+    onSearchSubmit();
   };
 
-  render() {
-    return (
-      <form
-        className={styles.topControls}
-        onSubmit={this.onSearchSubmit}
-        aria-label="Search form"
-      >
-        <input
-          type="text"
-          onChange={this.onSearchChange}
-          value={this.props.searchValue}
-        />
-        <button>Search</button>
-      </form>
-    );
-  }
+  return (
+    <form
+      className={styles.topControls}
+      onSubmit={handleSubmit}
+      aria-label="Search form"
+    >
+      <input type="text" onChange={handleChange} value={searchValue} />
+      <button>Search</button>
+    </form>
+  );
 }
-
-export default Search;
