@@ -37,29 +37,36 @@ export default function PersonDetails({
   }, [id]);
 
   return (
-    <div className={styles.detailedView}>
-      {isLoading && (
-        <div className={styles.spinnerContainer}>
-          <Spinner isLoading={isLoading} />
+    <>
+      {!error && (
+        <div className={styles.detailedView}>
+          {isLoading && (
+            <div className={styles.spinnerContainer}>
+              <Spinner isLoading={isLoading} />
+            </div>
+          )}
+          {person && !isLoading && (
+            <>
+              <button
+                className={styles.closeDetailsBtn}
+                onClick={onCloseDetails}
+              >
+                ×
+              </button>
+              {Object.keys(person)
+                .filter((el) => allowedPersonAttributes.includes(el))
+                .map((key) => {
+                  return (
+                    <div key={key} className={styles.detailedRow}>
+                      <span>{formatPersonAttribute(key)}</span>
+                      <span>{person[key as keyof PersonAttributes]}</span>
+                    </div>
+                  );
+                })}
+            </>
+          )}
         </div>
       )}
-      {person && !isLoading && (
-        <>
-          <button className={styles.closeDetailsBtn} onClick={onCloseDetails}>
-            ×
-          </button>
-          {Object.keys(person)
-            .filter((el) => allowedPersonAttributes.includes(el))
-            .map((key) => {
-              return (
-                <div key={key} className={styles.detailedRow}>
-                  <span>{formatPersonAttribute(key)}</span>
-                  <span>{person[key as keyof PersonAttributes]}</span>
-                </div>
-              );
-            })}
-        </>
-      )}
-    </div>
+    </>
   );
 }

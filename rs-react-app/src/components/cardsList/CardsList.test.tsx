@@ -51,25 +51,41 @@ describe('CardList Component Tests', () => {
 
   describe('Rendering Tests', () => {
     test('Renders correct number of items when data is provided', () => {
-      render(<CardsList data={mockData} isLoading={false} />);
+      render(
+        <CardsList
+          data={mockData}
+          isLoading={false}
+          onSelectPerson={() => ({})}
+        />
+      );
       const cards = screen.queryAllByTestId('mock-card');
       expect(cards.length).toBe(mockData.length);
     });
 
     test('Displays "no results" message when data array is empty', () => {
-      render(<CardsList data={[]} isLoading={false} />);
+      render(
+        <CardsList data={[]} isLoading={false} onSelectPerson={() => ({})} />
+      );
       expect(screen.getByText('no results')).toBeInTheDocument();
     });
 
     test('Shows isLoading state while fetching data', () => {
-      render(<CardsList data={[]} isLoading={true} />);
+      render(
+        <CardsList data={[]} isLoading={true} onSelectPerson={() => ({})} />
+      );
       expect(screen.getByTestId('spinner')).toBeInTheDocument();
     });
   });
 
   describe('Data Display Tests', () => {
     test('Correctly displays item names and descriptions', () => {
-      render(<CardsList data={mockData} isLoading={false} />);
+      render(
+        <CardsList
+          data={mockData}
+          isLoading={false}
+          onSelectPerson={() => ({})}
+        />
+      );
       expect(screen.getByText('Test Skywalker')).toBeInTheDocument();
       expect(screen.getByText('30BBY')).toBeInTheDocument();
       expect(screen.getByText('Test Organa')).toBeInTheDocument();
