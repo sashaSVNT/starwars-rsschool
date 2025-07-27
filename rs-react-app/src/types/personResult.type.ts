@@ -12,4 +12,6 @@ export type PersonAttributes = {
   gender: string;
   hair_color: string;
   height: string;
+  skin_color: string;
+  mass: string;
 };
