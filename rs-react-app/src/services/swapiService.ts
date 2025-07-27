@@ -12,7 +12,7 @@ class SwapiService {
       throw new Error(`Could not fetch ${url}`);
     }
 
-    return await res.json();
+    return res.json();
   };
 
   public getAllPeople = async (searchWord: string) => {

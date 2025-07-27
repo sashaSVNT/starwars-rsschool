@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import styles from './Card.module.css';
-import formatKey from '../../utils/formatKey';
+import formatPersonAttribute from '../../utils/formatPersonAttribute';
 
 interface CardProps {
   name: string;
@@ -21,7 +21,7 @@ export default class Card extends Component<CardProps> {
             <tr>
               {Object.keys(attributes).map((el, i) => (
                 <th key={i} style={{ backgroundColor: '#57c7ff' }}>
-                  {formatKey(el)}
+                  {formatPersonAttribute(el)}
                 </th>
               ))}
             </tr>

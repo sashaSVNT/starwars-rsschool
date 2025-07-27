@@ -7,13 +7,10 @@ type SpinnerProps = {
 
 class Spinner extends Component<SpinnerProps> {
   render() {
-    return (
-      <div
-        className={styles.spinner}
-        style={{ display: this.props.loading ? 'block' : 'none' }}
-        data-testid="spinner"
-      ></div>
-    );
+    if (this.props.loading) {
+      return null;
+    }
+    return <div className={styles.spinner} data-testid="spinner"></div>;
   }
 }
 

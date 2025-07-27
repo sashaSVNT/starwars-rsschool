@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import Card from './Card';
 import { vi } from 'vitest';
-import formatKey from '../../utils/formatKey';
+import formatPersonAttribute from '../../utils/formatPersonAttribute';
 import styles from './Card.module.css';
 
-vi.mock('../../utils/formatKey', () => ({
+vi.mock('../../utils/formatPersonAttribute', () => ({
   default: vi.fn().mockImplementation((key) => `test ${key}`),
 }));
 
@@ -35,12 +35,12 @@ describe('Card tests', () => {
     expect(screen.getByText('190')).toBeInTheDocument();
   });
 
-  test('formatKey mock tests', () => {
+  test('formatPersonAttribute mock tests', () => {
     render(<Card {...props} />);
-    expect(formatKey).toHaveBeenCalledWith('birthYear');
-    expect(formatKey).toHaveBeenCalledWith('eyeColor');
-    expect(formatKey).toHaveBeenCalledWith('gender');
-    expect(formatKey).toHaveBeenCalledWith('height');
-    expect(formatKey).toHaveBeenCalledTimes(4);
+    expect(formatPersonAttribute).toHaveBeenCalledWith('birthYear');
+    expect(formatPersonAttribute).toHaveBeenCalledWith('eyeColor');
+    expect(formatPersonAttribute).toHaveBeenCalledWith('gender');
+    expect(formatPersonAttribute).toHaveBeenCalledWith('height');
+    expect(formatPersonAttribute).toHaveBeenCalledTimes(4);
   });
 });
