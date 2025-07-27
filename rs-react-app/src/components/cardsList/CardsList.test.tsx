@@ -47,25 +47,25 @@ describe('CardList Component Tests', () => {
 
   describe('Rendering Tests', () => {
     test('Renders correct number of items when data is provided', () => {
-      render(<CardsList data={mockData} loading={false} />);
+      render(<CardsList data={mockData} isLoading={false} />);
       const cards = screen.queryAllByTestId('mock-card');
       expect(cards.length).toBe(mockData.length);
     });
 
     test('Displays "no results" message when data array is empty', () => {
-      render(<CardsList data={[]} loading={false} />);
+      render(<CardsList data={[]} isLoading={false} />);
       expect(screen.getByText('no results')).toBeInTheDocument();
     });
 
-    test('Shows loading state while fetching data', () => {
-      render(<CardsList data={[]} loading={true} />);
+    test('Shows isLoading state while fetching data', () => {
+      render(<CardsList data={[]} isLoading={true} />);
       expect(screen.getByTestId('spinner')).toBeInTheDocument();
     });
   });
 
   describe('Data Display Tests', () => {
     test('Correctly displays item names and descriptions', () => {
-      render(<CardsList data={mockData} loading={false} />);
+      render(<CardsList data={mockData} isLoading={false} />);
       expect(screen.getByText('Test Skywalker')).toBeInTheDocument();
       expect(screen.getByText('30BBY')).toBeInTheDocument();
       expect(screen.getByText('Test Organa')).toBeInTheDocument();
