@@ -21,10 +21,6 @@ describe('Search Component Tests', () => {
         screen.getByRole('button', { name: 'Search' })
       ).toBeInTheDocument();
     });
-
-    // test('Displays previously saved search term from localStorage on mount', () => {});
-
-    // test('Shows empty input when no saved term exists', () => {});
   });
 
   describe('User Interaction Tests', () => {

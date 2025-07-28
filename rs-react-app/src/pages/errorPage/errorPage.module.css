@@ -1,0 +1,31 @@
+.errorPage {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.errorHeader {
+  font-size: 70px;
+}
+
+.errorDescription {
+  font-size: 36px;
+}
+
+.errorBackBtn {
+  font-size: 15px;
+  border: 0;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: transparent;
+}
