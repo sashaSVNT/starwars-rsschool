@@ -39,8 +39,8 @@ describe('Card tests', () => {
 
   test('formatPersonAttribute mock tests', () => {
     render(<Card {...props} />);
-    expect(formatPersonAttribute).toHaveBeenCalledWith('birthYear');
-    expect(formatPersonAttribute).toHaveBeenCalledWith('eyeColor');
+    expect(formatPersonAttribute).toHaveBeenCalledWith('birth_year');
+    expect(formatPersonAttribute).toHaveBeenCalledWith('eye_color');
     expect(formatPersonAttribute).toHaveBeenCalledWith('gender');
     expect(formatPersonAttribute).toHaveBeenCalledWith('height');
     expect(formatPersonAttribute).toHaveBeenCalledTimes(4);
