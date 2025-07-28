@@ -13,6 +13,7 @@ vi.mock('./App', () => ({
 
 describe('Application Entry Point', () => {
   beforeEach(() => {
+    vi.resetModules();
     vi.clearAllMocks();
     const rootElement = document.createElement('div');
     rootElement.id = 'root';
@@ -28,5 +29,16 @@ describe('Application Entry Point', () => {
         id: 'root',
       })
     );
+  });
+
+  test('Error logging when container not found', async () => {
+    const rootElement = document.getElementById('root') as HTMLElement;
+    document.body.removeChild(rootElement);
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await import('./main');
+    expect(errorSpy).toHaveBeenCalledWith('Root element not found');
+
+    errorSpy.mockRestore();
   });
 });

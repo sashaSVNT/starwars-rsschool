@@ -3,10 +3,10 @@ import type { PersonResult } from '../../types/personResult.type';
 import CardsList from './CardsList';
 
 vi.mock('../card/Card', () => ({
-  default: vi.fn(({ name, birthYear }) => (
+  default: vi.fn(({ name, birth_year }) => (
     <div data-testid="mock-card">
       <h2>{name}</h2>
-      <div>{birthYear}</div>
+      <div>{birth_year}</div>
     </div>
   )),
 }));

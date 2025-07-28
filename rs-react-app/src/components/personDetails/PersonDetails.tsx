@@ -39,7 +39,7 @@ export default function PersonDetails({
   return (
     <>
       {!error && (
-        <div className={styles.detailedView}>
+        <div className={styles.detailedView} data-testid="personDetails">
           {isLoading && (
             <div className={styles.spinnerContainer}>
               <Spinner isLoading={isLoading} />
