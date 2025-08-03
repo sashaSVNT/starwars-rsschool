@@ -22,8 +22,11 @@ const selectedItemsSlice = createSlice({
         state.selectedIds.push(selectedItemId);
       }
     },
+    unselectAllItems: (state: SelectedItemsState) => {
+      state.selectedIds = [];
+    },
   },
 });
 
-export const { toggleItem } = selectedItemsSlice.actions;
+export const { toggleItem, unselectAllItems } = selectedItemsSlice.actions;
 export default selectedItemsSlice.reducer;

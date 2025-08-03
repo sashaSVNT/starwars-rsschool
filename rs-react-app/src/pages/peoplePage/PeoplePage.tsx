@@ -8,6 +8,10 @@ import useLocalStorage from '../../utils/useLocalStorage';
 import Pagination from '../../components/pagination';
 import { useNavigate, useParams } from 'react-router-dom';
 import PersonDetails from '../../components/personDetails';
+import SelectedItemsCounter from '../../components/selectedItemsCounter/SelectedItemsCounter';
+import { useDispatch, useSelector } from 'react-redux';
+import { unselectAllItems } from '../../features/selectedItemReducer';
+import type { RootState } from '../../app/store';
 
 export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
@@ -18,6 +22,11 @@ export default function PeoplePage() {
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const currentPage = Math.max(1, parseInt(pageParam) || 1);
+  const dispatch = useDispatch();
+
+  const selectedItemsQuantity = useSelector(
+    (state: RootState) => state.selectedItems.selectedIds
+  ).length;
 
   useEffect(() => {
     async function fetchData() {
@@ -63,6 +72,10 @@ export default function PeoplePage() {
     navigate(`/${currentPage}`);
   };
 
+  const unselectAll = () => {
+    dispatch(unselectAllItems());
+  };
+
   return (
     <div className={styles.wrapper}>
       <Search
@@ -80,6 +93,12 @@ export default function PeoplePage() {
           <PersonDetails id={detailsId} onCloseDetails={onCloseDetails} />
         )}
       </div>
+      {selectedItemsQuantity > 0 && (
+        <SelectedItemsCounter
+          quantity={selectedItemsQuantity}
+          unselectAll={unselectAll}
+        />
+      )}
       {!isLoading && (
         <Pagination
           currentPage={currentPage}

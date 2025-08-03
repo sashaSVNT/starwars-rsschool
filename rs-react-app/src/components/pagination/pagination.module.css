@@ -1,5 +1,5 @@
 .pagination {
-  max-width: 900px;
+  max-width: 1280px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -8,7 +8,6 @@
 }
 
 .paginationButton {
-  width: 100px;
   height: 35px;
   border: 1px solid var(--border-color);
   background-color: var(--background-color);
