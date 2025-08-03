@@ -1,9 +1,4 @@
-import type {
-  GetAllPeopleResponse,
-  GetPeopleByQueryResponse,
-  GetPersonByIdResponse,
-} from '../types/apiResponse.type';
-// import type { Person } from '../types/person.type';
+import type { GetPersonByIdResponse } from '../types/apiResponse.type';
 
 class SwapiService {
   private basePath = 'https://www.swapi.tech/api/';
@@ -19,25 +14,21 @@ class SwapiService {
     return res.json();
   };
 
-  public getAllPeople = async (pageNumber: number) => {
-    const searchQuery = `people?page=${pageNumber}&limit=${this.limitOfRecords}&expanded=true`;
-    const res: GetAllPeopleResponse = await this.getResource(searchQuery);
-    console.log(res);
-    if (res.message === 'ok') {
-      return res;
-    } else {
-      throw new Error(`${res.message}`);
-    }
-  };
+  public getPeople = async (pageNumber: number, searchWord: string = '') => {
+    const searchQuery = searchWord
+      ? `people?name=${searchWord}`
+      : `people?page=${pageNumber}&limit=${this.limitOfRecords}&expanded=true`;
 
-  public getPeopleByQuery = async (searchWord: string) => {
-    const searchQuery = `people?name=${searchWord}`;
-    const res: GetPeopleByQueryResponse = await this.getResource(searchQuery);
-    if (res.message === 'ok') {
-      return res;
-    } else {
-      throw new Error(`${res.message}`);
+    const res = await this.getResource(searchQuery);
+    if (res.message !== 'ok') {
+      throw new Error(res.message);
     }
+
+    return {
+      results: res.result || res.results,
+      totalPages: searchWord ? 1 : res.total_pages,
+      onSearch: Boolean(searchWord),
+    };
   };
 
   public getPersonById = async (id: string) => {

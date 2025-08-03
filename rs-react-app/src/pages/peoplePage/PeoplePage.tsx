@@ -17,47 +17,46 @@ export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
   const [people, setPeople] = useState<PersonResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [onSearchMode, setOnSearchMode] = useState(false);
   const [searchValue, setSearchValue, saveIntoLS] =
     useLocalStorage('searchValue');
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
-  const currentPage = Math.max(1, parseInt(pageParam) || 1);
+  const currentPage = Math.max(1, parseInt(pageParam));
   const dispatch = useDispatch();
 
   const selectedItemsQuantity = useSelector(
     (state: RootState) => state.selectedItems.selectedIds
   ).length;
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const response = await swapiService.getAllPeople(currentPage);
-      setPeople(response.results);
-      setTotalPages(response.total_pages);
-      setIsLoading(false);
+  const fetchData = async () => {
+    setIsLoading(true);
+    if (isNaN(currentPage)) {
+      navigate('/1');
+    } else {
+      try {
+        const response = await swapiService.getPeople(currentPage, searchValue);
+        setPeople(response.results);
+        setTotalPages(response.totalPages);
+        setOnSearchMode(response.onSearch);
+      } catch (error) {
+        console.error(error);
+        setPeople([]);
+      } finally {
+        setIsLoading(false);
+      }
     }
+  };
+
+  useEffect(() => {
     fetchData();
   }, [currentPage]);
 
   const onSearchSubmit = async () => {
-    setIsLoading(true);
     const value = searchValue.trim();
     saveIntoLS(value);
-    try {
-      let searchPeople;
-      if (value === '') {
-        const response = await swapiService.getAllPeople(currentPage);
-        searchPeople = response.results;
-      } else {
-        const response = await swapiService.getPeopleByQuery(value);
-        searchPeople = response.result;
-      }
-      onPageChange(1);
-      setPeople(searchPeople);
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
+    fetchData();
+    onPageChange(1);
   };
 
   const onPageChange = (newPage: number) => {
@@ -99,7 +98,7 @@ export default function PeoplePage() {
           unselectAll={unselectAll}
         />
       )}
-      {!isLoading && (
+      {!isLoading && !onSearchMode && (
         <Pagination
           currentPage={currentPage}
           onPageChange={onPageChange}

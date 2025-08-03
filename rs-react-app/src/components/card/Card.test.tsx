@@ -3,6 +3,8 @@ import Card from './Card';
 import { vi } from 'vitest';
 import formatPersonAttribute from '../../utils/formatPersonAttribute';
 import styles from './Card.module.css';
+import { Provider } from 'react-redux';
+import { store } from '../../app/store';
 
 vi.mock('../../utils/formatPersonAttribute', () => ({
   default: vi.fn().mockImplementation((key) => `test ${key}`),
@@ -23,22 +25,30 @@ describe('Card tests', () => {
     vi.clearAllMocks();
   });
 
+  const renderCardComponent = () => {
+    return render(
+      <Provider store={store}>
+        <Card {...props} />
+      </Provider>
+    );
+  };
+
   test('Displays name correctly', () => {
-    render(<Card {...props} />);
-    expect(screen.getByText('Test Skywalker')).toBeInTheDocument();
+    renderCardComponent();
+    expect(screen.getByText(props.name)).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2 })).toHaveClass(styles.name);
   });
 
   test('Displays attributes correctly', () => {
-    render(<Card {...props} />);
-    expect(screen.getByText('29BBY')).toBeInTheDocument();
-    expect(screen.getByText('green')).toBeInTheDocument();
-    expect(screen.getByText('male')).toBeInTheDocument();
-    expect(screen.getByText('190')).toBeInTheDocument();
+    renderCardComponent();
+    expect(screen.getByText(props.birth_year)).toBeInTheDocument();
+    expect(screen.getByText(props.eye_color)).toBeInTheDocument();
+    expect(screen.getByText(props.gender)).toBeInTheDocument();
+    expect(screen.getByText(props.height)).toBeInTheDocument();
   });
 
   test('formatPersonAttribute mock tests', () => {
-    render(<Card {...props} />);
+    renderCardComponent();
     expect(formatPersonAttribute).toHaveBeenCalledWith('birth_year');
     expect(formatPersonAttribute).toHaveBeenCalledWith('eye_color');
     expect(formatPersonAttribute).toHaveBeenCalledWith('gender');
