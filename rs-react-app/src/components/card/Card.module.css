@@ -2,10 +2,23 @@
 
 .card {
   display: flex;
+  align-items: center;
+}
+
+.cardDescription {
+  flex: 1;
+  display: flex;
   font-family: 'Orbitron', sans-serif;
   align-items: center;
   gap: 60px;
   padding: 10px;
+  cursor: pointer;
+}
+
+.cardCheckbox {
+  margin: 0 20px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
 }
 
