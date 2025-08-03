@@ -70,9 +70,6 @@ export default function PeoplePage() {
         onSearchChange={setSearchValue}
         searchValue={searchValue}
       />
-      <button className={styles.aboutBtn} onClick={() => navigate('/about')}>
-        About
-      </button>
       <div className={styles.masterDetailView}>
         <CardsList
           data={people}
