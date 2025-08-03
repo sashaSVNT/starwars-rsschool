@@ -1,0 +1,63 @@
+.header {
+  display: flex;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.topControls {
+  width: 50%;
+  display: flex;
+  gap: 10px;
+  input,
+  button {
+    height: 35px;
+    border: 1px solid rgb(156, 156, 156);
+    border-radius: 4px;
+    color: var(--text-color-secondary);
+    background-color: var(--card-secondary);
+  }
+}
+
+.topControls button {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.topControls button:hover {
+  color: var(--button-hover);
+}
+
+.topControls input {
+  flex: 1;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.headerBtnGroup {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.headerBtn {
+  font-size: 15px;
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color-secondary);
+  border-radius: 5px;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: transparent;
+}
+
+.headerBtn:hover {
+  color: var(--button-hover);
+}
+
+.themeBtn {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}

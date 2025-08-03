@@ -1,0 +1,24 @@
+.cardsContainer {
+  min-width: 60%;
+  flex: 1;
+  padding: 10px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.noData {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+
+.spinnerContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

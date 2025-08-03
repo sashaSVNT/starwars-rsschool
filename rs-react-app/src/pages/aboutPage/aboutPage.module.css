@@ -1,0 +1,45 @@
+.aboutPage {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: var(--text-color-secondary);
+}
+
+.position {
+  font-size: 1.5rem;
+}
+
+.name {
+  font-size: 3rem;
+}
+
+.location {
+  font-size: 2rem;
+}
+
+.backBtn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 15px;
+  border: 0;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: transparent;
+  color: var(--text-color-secondary);
+}
+
+.backBtn:hover {
+  color: #0006b3;
+}

@@ -1,0 +1,21 @@
+.pagination {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  color: var(--text-color-secondary);
+}
+
+.paginationButton {
+  height: 35px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  border-radius: 5px;
+  font-size: 16px;
+  color: var(--text-color-secondary);
+}
+
+.paginationButton:hover {
+  background-color: var(--card-secondary);
+}
