@@ -8,10 +8,11 @@
 .cardDescription {
   flex: 1;
   display: flex;
-  font-family: 'Orbitron', sans-serif;
   align-items: center;
-  gap: 60px;
+  font-family: 'Orbitron', sans-serif;
   padding: 10px;
+  gap: 60px;
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -23,7 +24,7 @@
 }
 
 .card:hover {
-  background-color: rgb(201, 201, 201);
+  background-color: var(--card-secondary);
 }
 
 .name {
@@ -32,6 +33,10 @@
 
 .attributes {
   border-collapse: collapse;
+}
+
+.cardAttribute {
+  background-color: var(--attribute-color);
 }
 
 table {

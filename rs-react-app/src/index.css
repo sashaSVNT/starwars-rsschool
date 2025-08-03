@@ -8,17 +8,23 @@
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --text-color: #213547;
+  --text-color-secondary: #2d2d2d;
+  --border-color: #000000;
+  --attribute-color: #57c7ff;
+  --background-color: #ededed;
+  --card-secondary: #c9c9c9;
+  --button-hover: #0006b3;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+[data-theme='dark'] {
+  --text-color: #c3c3c3;
+  --text-color-secondary: #efefef;
+  --border-color: #f0f0f0;
+  --attribute-color: #003f5e;
+  --background-color: #292929;
+  --card-secondary: #4e4e4e;
+  --button-hover: #4046ff;
 }
 
 a {
@@ -34,7 +40,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #ededed;
+  background-color: var(--background-color);
 }
 
 h1 {
@@ -44,19 +50,7 @@ h1 {
 
 button {
   cursor: pointer;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  transition: all 0.25s ease-out 0s;
 }
 
 #root {

@@ -37,7 +37,7 @@ export default function Card(props: CardProps) {
           <thead>
             <tr>
               {Object.keys(attributes).map((el, i) => (
-                <th key={i} style={{ backgroundColor: '#57c7ff' }}>
+                <th key={i} className={styles.cardAttribute}>
                   {formatPersonAttribute(el)}
                 </th>
               ))}
