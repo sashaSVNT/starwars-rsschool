@@ -1,5 +1,8 @@
 import styles from './Card.module.css';
 import formatPersonAttribute from '../../utils/formatPersonAttribute';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../app/store';
+import { toggleItem } from '../../features/selectedItemReducer';
 
 type CardProps = {
   id: string;
@@ -13,28 +16,42 @@ type CardProps = {
 
 export default function Card(props: CardProps) {
   const { id, onSelectPerson, name, ...attributes } = props;
-  console.log(attributes);
+  const selectedIds = useSelector(
+    (state: RootState) => state.selectedItems.selectedIds
+  );
+  const isSelected = selectedIds.includes(id);
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.card} onClick={() => onSelectPerson(id)}>
-      <h2 className={styles.name}>{name}</h2>
-      <table className={styles.attributes}>
-        <thead>
-          <tr>
-            {Object.keys(attributes).map((el, i) => (
-              <th key={i} style={{ backgroundColor: '#57c7ff' }}>
-                {formatPersonAttribute(el)}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {Object.values(attributes).map((el, i) => (
-              <td key={i}>{el}</td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
+      <input
+        type="checkbox"
+        checked={isSelected}
+        className={styles.cardCheckbox}
+        onChange={() => dispatch(toggleItem(id))}
+        onClick={(e) => e.stopPropagation()}
+      />
+      <div className={styles.cardDescription}>
+        <h2 className={styles.name}>{name}</h2>
+        <table className={styles.attributes}>
+          <thead>
+            <tr>
+              {Object.keys(attributes).map((el, i) => (
+                <th key={i} style={{ backgroundColor: '#57c7ff' }}>
+                  {formatPersonAttribute(el)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {Object.values(attributes).map((el, i) => (
+                <td key={i}>{el}</td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -12,10 +12,10 @@ import PersonDetails from '../../components/personDetails';
 export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
   const [people, setPeople] = useState<PersonResult[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue, saveIntoLS] =
     useLocalStorage('searchValue');
-  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const currentPage = Math.max(1, parseInt(pageParam) || 1);
 
@@ -29,10 +29,6 @@ export default function PeoplePage() {
     }
     fetchData();
   }, [currentPage]);
-
-  const onSearchChange = (value: string) => {
-    setSearchValue(value);
-  };
 
   const onSearchSubmit = async () => {
     setIsLoading(true);
@@ -71,7 +67,7 @@ export default function PeoplePage() {
     <div className={styles.wrapper}>
       <Search
         onSearchSubmit={onSearchSubmit}
-        onSearchChange={onSearchChange}
+        onSearchChange={setSearchValue}
         searchValue={searchValue}
       />
       <button className={styles.aboutBtn} onClick={() => navigate('/about')}>
