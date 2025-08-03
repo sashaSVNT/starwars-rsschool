@@ -3,20 +3,20 @@ import PeoplePage from '../../pages/peoplePage';
 import ErrorPage from '../../pages/errorPage';
 import AboutPage from '../../pages/aboutPage';
 
-export default function AppRoutes() {
-  const navigationRoutes = [
-    { path: '/', element: <PeoplePage /> },
-    { path: '/:page', element: <PeoplePage /> },
-    { path: '/:page/:detailsId', element: <PeoplePage /> },
-    { path: '/about', element: <AboutPage /> },
-    { path: '*', element: <ErrorPage /> },
-  ];
+const navigationRoutes = [
+  { path: '/', element: <PeoplePage /> },
+  { path: '/:page', element: <PeoplePage /> },
+  { path: '/:page/:detailsId', element: <PeoplePage /> },
+  { path: '/about', element: <AboutPage /> },
+  { path: '*', element: <ErrorPage /> },
+];
 
+export default function AppRoutes() {
   return (
     <BrowserRouter basename="/starwars-rsschool">
       <Routes>
-        {navigationRoutes.map((el, i) => (
-          <Route key={i} path={el.path} element={el.element} />
+        {navigationRoutes.map((el) => (
+          <Route key={el.path} path={el.path} element={el.element} />
         ))}
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-type SelectedItemsState = {
+export type SelectedItemsState = {
   selectedIds: string[];
 };
 

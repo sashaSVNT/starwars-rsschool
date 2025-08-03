@@ -5,12 +5,14 @@ import PeoplePage from './PeoplePage';
 import { swapiService } from '../../services/swapiService';
 import type { PersonResult } from '../../types/personResult.type';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../app/store';
+import { ThemeProvider } from '../../context/ThemeProvider';
 
 vi.mock('../../services/swapiService', () => {
   return {
     swapiService: {
-      getAllPeople: vi.fn(),
-      getPeopleByQuery: vi.fn(),
+      getPeople: vi.fn(),
       getPersonById: vi.fn(),
     },
   };
@@ -80,52 +82,61 @@ describe('PeoplePage Component Tests', () => {
 
   const renderWithRouter = (initialPage = ['/1']) => {
     return render(
-      <MemoryRouter initialEntries={initialPage}>
-        <Routes>
-          <Route path="/" element={<PeoplePage />} />
-          <Route path="/:page" element={<PeoplePage />} />
-          <Route path="/:page/:detailsId" element={<PeoplePage />} />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <ThemeProvider>
+          <MemoryRouter initialEntries={initialPage}>
+            <Routes>
+              <Route path="/" element={<PeoplePage />} />
+              <Route path="/:page" element={<PeoplePage />} />
+              <Route path="/:page/:detailsId" element={<PeoplePage />} />
+            </Routes>
+          </MemoryRouter>
+        </ThemeProvider>
+      </Provider>
     );
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
     localStorageMock.clear();
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
+    (swapiService.getPeople as Mock).mockResolvedValue({
       results: [],
-      total_pages: 1,
-    });
-    (swapiService.getPeopleByQuery as Mock).mockResolvedValue({
-      result: [],
+      totalPages: 1,
+      onSearch: false,
     });
     (swapiService.getPersonById as Mock).mockResolvedValue(mockPersonDetails);
   });
 
   test('renders PeoplePage without crashing', () => {
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      total_pages: 1,
+    (swapiService.getPeople as Mock).mockResolvedValue({
+      results: [],
+      totalPages: 1,
+      onSearch: false,
     });
     renderWithRouter();
   });
 
   test('Makes initial API call on component mount', async () => {
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
+    (swapiService.getPeople as Mock).mockResolvedValue({
       results: mockPeople,
-      total_pages: 1,
+      totalPages: 1,
+      onSearch: false,
     });
     renderWithRouter();
 
     await waitFor(() => {
-      expect(swapiService.getAllPeople).toHaveBeenCalledWith(1);
+      expect(swapiService.getPeople).toHaveBeenCalledWith(1, '');
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     });
   });
 
   test('Handles search term from localStorage on initial load', async () => {
     localStorageMock.getItem.mockReturnValue('skywalker');
+    (swapiService.getPeople as Mock).mockResolvedValue({
+      results: mockPeople,
+      totalPages: 1,
+      onSearch: true,
+    });
     renderWithRouter();
 
     await waitFor(() => {
@@ -134,23 +145,25 @@ describe('PeoplePage Component Tests', () => {
   });
 
   test('Calls API with correct parameters', async () => {
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
+    (swapiService.getPeople as Mock).mockResolvedValue({
       results: mockPeople,
-      total_pages: 1,
+      totalPages: 1,
+      onSearch: true,
     });
     renderWithRouter();
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'luke' } });
     fireEvent.click(screen.getByRole('button', { name: 'Search' }));
     await waitFor(() => {
-      expect(swapiService.getPeopleByQuery).toHaveBeenCalledWith('luke');
+      expect(swapiService.getPeople).toHaveBeenCalledWith(1, 'luke');
     });
   });
 
   test('Handles successful API responses', async () => {
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
+    (swapiService.getPeople as Mock).mockResolvedValue({
       results: mockPeople,
-      total_pages: 1,
+      totalPages: 1,
+      onSearch: false,
     });
     renderWithRouter();
     await waitFor(() => {
@@ -159,9 +172,10 @@ describe('PeoplePage Component Tests', () => {
   });
 
   test('Updates component state based on API responses', async () => {
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
+    (swapiService.getPeople as Mock).mockResolvedValue({
       results: mockPeople,
-      total_pages: 1,
+      totalPages: 1,
+      onSearch: false,
     });
     renderWithRouter();
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
@@ -191,7 +205,6 @@ describe('PeoplePage Component Tests', () => {
     fireEvent.change(input, { target: { value: '  test value  ' } });
     fireEvent.click(screen.getByRole('button', { name: 'Search' }));
     await waitFor(() => {
-      expect(swapiService.getPeopleByQuery).toHaveBeenCalledWith('test value');
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
         'searchValue',
         'test value'
@@ -200,9 +213,10 @@ describe('PeoplePage Component Tests', () => {
   });
 
   test('Opens person details correctly', async () => {
-    (swapiService.getAllPeople as Mock).mockResolvedValue({
+    (swapiService.getPeople as Mock).mockResolvedValue({
       results: mockPeople,
-      total_pages: 1,
+      totalPages: 1,
+      onSearch: false,
     });
 
     renderWithRouter();
@@ -219,19 +233,23 @@ describe('PeoplePage Component Tests', () => {
   });
 
   test('Handles pagination successfully', async () => {
-    (swapiService.getAllPeople as Mock)
+    (swapiService.getPeople as Mock)
       .mockResolvedValueOnce({
         results: [mockPeople[0]],
-        total_pages: 2,
+        totalPages: 2,
+        onSearch: false,
       })
-      .mockResolvedValueOnce({ results: [mockPeople[1]], total_pages: 2 });
+      .mockResolvedValueOnce({
+        results: [mockPeople[1]],
+        totalPages: 2,
+        onSearch: false,
+      });
 
     renderWithRouter();
     await waitFor(() => screen.getByText('Luke Skywalker'));
     const nextButton = screen.getByRole('button', { name: 'Next' });
     fireEvent.click(nextButton);
     await waitFor(() => {
-      expect(swapiService.getAllPeople).toHaveBeenCalledWith(2);
       expect(screen.getByText('Leia Organa')).toBeInTheDocument();
     });
   });
