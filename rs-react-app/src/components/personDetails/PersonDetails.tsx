@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-import { swapiService } from '../../services/swapiService';
 import type { PersonAttributes } from '../../types/personResult.type';
 import styles from './personDetails.module.css';
 import Spinner from '../spinner';
 import formatPersonAttribute from '../../utils/formatPersonAttribute';
 import { allowedPersonAttributes } from '../../utils/allowedPersonAttributes';
+import { useGetPersonByIdQuery } from '../../features/api/api';
 
 type PersonDetailsProps = {
   id: string;
@@ -15,37 +14,18 @@ export default function PersonDetails({
   id,
   onCloseDetails,
 }: PersonDetailsProps) {
-  const [person, setPerson] = useState<PersonAttributes>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string>();
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const data = await swapiService.getPersonById(id);
-        setPerson(data.result.properties);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log(error.message);
-          setError(error.message);
-        }
-      }
-      setIsLoading(false);
-    }
-    fetchData();
-  }, [id]);
+  const { data: person, isError, isFetching } = useGetPersonByIdQuery(id);
 
   return (
     <>
-      {!error && (
+      {!isError && (
         <div className={styles.detailedView} data-testid="personDetails">
-          {isLoading && (
+          {isFetching && (
             <div className={styles.spinnerContainer}>
-              <Spinner isLoading={isLoading} />
+              <Spinner isLoading={isFetching} />
             </div>
           )}
-          {person && !isLoading && (
+          {person && !isFetching && (
             <>
               <button
                 className={styles.closeDetailsBtn}
