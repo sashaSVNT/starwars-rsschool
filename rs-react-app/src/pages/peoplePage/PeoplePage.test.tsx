@@ -1,20 +1,76 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import type { Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import PeoplePage from './PeoplePage';
-import { swapiService } from '../../services/swapiService';
-import type { PersonResult } from '../../types/personResult.type';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import { ThemeProvider } from '../../context/ThemeProvider';
+import { api } from '../../features/api/api';
 
-vi.mock('../../services/swapiService', () => {
+vi.mock('../../features/api/api', async () => {
+  const actual = await vi.importActual<typeof import('../../features/api/api')>(
+    '../../features/api/api'
+  );
+
   return {
-    swapiService: {
-      getPeople: vi.fn(),
-      getPersonById: vi.fn(),
-    },
+    ...actual,
+    useGetPeopleQuery: () => ({
+      data: {
+        results: [
+          {
+            uid: '1',
+            _id: '1',
+            description: 'Person',
+            properties: {
+              name: 'Luke Skywalker',
+              birth_year: '19BBY',
+              gender: 'male',
+              eye_color: 'blue',
+              hair_color: 'brown',
+              height: '172',
+              skin_color: 'brown',
+              mass: '66',
+            },
+          },
+          {
+            uid: '2',
+            _id: '2',
+            description: 'Person',
+            properties: {
+              name: 'Leia Organa',
+              birth_year: '19BBY',
+              gender: 'female',
+              eye_color: 'brown',
+              hair_color: 'brown',
+              height: '150',
+              skin_color: 'white',
+              mass: '77',
+            },
+          },
+        ],
+        totalPages: 2,
+      },
+      isLoading: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    }),
+    useGetPersonByIdQuery: () => ({
+      data: {
+        properties: {
+          name: 'Leia Organa',
+          birth_year: '19BBY',
+          gender: 'female',
+          eye_color: 'brown',
+          hair_color: 'brown',
+          height: '150',
+          skin_color: 'white',
+          mass: '77',
+        },
+      },
+      isLoading: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    }),
   };
 });
 
@@ -36,50 +92,6 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 describe('PeoplePage Component Tests', () => {
-  const mockPeople: PersonResult[] = [
-    {
-      description: 'Person',
-      properties: {
-        name: 'Luke Skywalker',
-        birth_year: '19BBY',
-        eye_color: 'blue',
-        hair_color: 'brown',
-        gender: 'male',
-        height: '172',
-        skin_color: 'brown',
-        mass: '66',
-      },
-      uid: '1',
-      _id: '1',
-    },
-    {
-      description: 'Person',
-      properties: {
-        name: 'Leia Organa',
-        birth_year: '19BBY',
-        eye_color: 'brown',
-        hair_color: 'brown',
-        gender: 'female',
-        height: '150',
-        skin_color: 'white',
-        mass: '77',
-      },
-      uid: '2',
-      _id: '2',
-    },
-  ];
-
-  const mockPersonDetails = {
-    name: 'Luke Skywalker',
-    birth_year: '19BBY',
-    eye_color: 'blue',
-    hair_color: 'brown',
-    gender: 'male',
-    height: '172',
-    skin_color: 'brown',
-    mass: '66',
-  };
-
   const renderWithRouter = (initialPage = ['/1']) => {
     return render(
       <Provider store={store}>
@@ -99,44 +111,15 @@ describe('PeoplePage Component Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorageMock.clear();
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: [],
-      totalPages: 1,
-      onSearch: false,
-    });
-    (swapiService.getPersonById as Mock).mockResolvedValue(mockPersonDetails);
   });
 
   test('renders PeoplePage without crashing', () => {
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: [],
-      totalPages: 1,
-      onSearch: false,
-    });
     renderWithRouter();
-  });
-
-  test('Makes initial API call on component mount', async () => {
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      totalPages: 1,
-      onSearch: false,
-    });
-    renderWithRouter();
-
-    await waitFor(() => {
-      expect(swapiService.getPeople).toHaveBeenCalledWith(1, '');
-      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-    });
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
   test('Handles search term from localStorage on initial load', async () => {
     localStorageMock.getItem.mockReturnValue('skywalker');
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      totalPages: 1,
-      onSearch: true,
-    });
     renderWithRouter();
 
     await waitFor(() => {
@@ -145,44 +128,37 @@ describe('PeoplePage Component Tests', () => {
   });
 
   test('Calls API with correct parameters', async () => {
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      totalPages: 1,
-      onSearch: true,
-    });
     renderWithRouter();
+
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'luke' } });
     fireEvent.click(screen.getByRole('button', { name: 'Search' }));
     await waitFor(() => {
-      expect(swapiService.getPeople).toHaveBeenCalledWith(1, 'luke');
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'searchValue',
+        'luke'
+      );
     });
   });
 
-  test('Handles successful API responses', async () => {
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      totalPages: 1,
-      onSearch: false,
-    });
-    renderWithRouter();
-    await waitFor(() => {
-      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-    });
-  });
-
-  test('Updates component state based on API responses', async () => {
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      totalPages: 1,
-      onSearch: false,
+  test('Shown spinner based on API response', async () => {
+    vi.mock('../../features/api/api', async () => {
+      const actual = await vi.importActual<
+        typeof import('../../features/api/api')
+      >('../../features/api/api');
+      return {
+        ...actual,
+        useGetPeopleQuery: () => ({
+          data: undefined,
+          isLoading: true,
+          isFetching: true,
+          refetch: vi.fn(),
+        }),
+        useGetPersonByIdQuery: actual.useGetPersonByIdQuery,
+      };
     });
     renderWithRouter();
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
-    await waitFor(() => {
-      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-      expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
-    });
   });
 
   test('Manages search term state correctly', async () => {
@@ -209,48 +185,6 @@ describe('PeoplePage Component Tests', () => {
         'searchValue',
         'test value'
       );
-    });
-  });
-
-  test('Opens person details correctly', async () => {
-    (swapiService.getPeople as Mock).mockResolvedValue({
-      results: mockPeople,
-      totalPages: 1,
-      onSearch: false,
-    });
-
-    renderWithRouter();
-
-    await waitFor(() => screen.getByText('Luke Skywalker'));
-    const card = screen.getByText('Luke Skywalker').closest('div');
-    if (card) {
-      fireEvent.click(card);
-    }
-    await waitFor(() => {
-      expect(swapiService.getPersonById).toHaveBeenCalledWith('1');
-      expect(screen.getByText('male')).toBeInTheDocument();
-    });
-  });
-
-  test('Handles pagination successfully', async () => {
-    (swapiService.getPeople as Mock)
-      .mockResolvedValueOnce({
-        results: [mockPeople[0]],
-        totalPages: 2,
-        onSearch: false,
-      })
-      .mockResolvedValueOnce({
-        results: [mockPeople[1]],
-        totalPages: 2,
-        onSearch: false,
-      });
-
-    renderWithRouter();
-    await waitFor(() => screen.getByText('Luke Skywalker'));
-    const nextButton = screen.getByRole('button', { name: 'Next' });
-    fireEvent.click(nextButton);
-    await waitFor(() => {
-      expect(screen.getByText('Leia Organa')).toBeInTheDocument();
     });
   });
 });

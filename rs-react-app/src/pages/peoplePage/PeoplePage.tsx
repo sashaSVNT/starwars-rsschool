@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './peoplePage.module.css';
 import Search from '../../components/search';
 import CardsList from '../../components/cardsList';
@@ -14,14 +14,14 @@ import { api, useGetPeopleQuery } from '../../features/api/api';
 
 export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
-  const [searchValue, setSearchValue, saveIntoLS] =
-    useLocalStorage('searchValue');
+  const [savedValue, setSavedValue] = useLocalStorage('searchValue');
+  const [searchValue, setSearchValue] = useState(savedValue);
   const navigate = useNavigate();
   const currentPage = Math.max(1, parseInt(pageParam));
   const dispatch = useDispatch();
   const { data, isFetching, refetch } = useGetPeopleQuery({
     pageNumber: currentPage,
-    searchWord: searchValue,
+    searchWord: savedValue,
   });
   const people = data?.results || [];
   const totalPages = data?.totalPages || 1;
@@ -37,7 +37,7 @@ export default function PeoplePage() {
 
   const onSearchSubmit = async () => {
     const value = searchValue.trim();
-    saveIntoLS(value);
+    setSavedValue(value);
     onPageChange(1);
   };
 

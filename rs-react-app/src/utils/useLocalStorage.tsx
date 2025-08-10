@@ -6,7 +6,8 @@ export default function useLocalStorage(key: string) {
   );
   const updateValue = (inputValue: string) => {
     localStorage.setItem(key, inputValue);
+    setStoredValue(inputValue);
   };
 
-  return [storedValue, setStoredValue, updateValue] as const;
+  return [storedValue, updateValue] as const;
 }
