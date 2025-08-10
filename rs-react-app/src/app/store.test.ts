@@ -1,6 +1,9 @@
 import { expect } from 'vitest';
 import { store } from './store';
-import { toggleItem, unselectAllItems } from '../features/selectedItemReducer';
+import {
+  toggleItem,
+  unselectAllItems,
+} from '../features/selectedItemReducer/selectedItemReducer';
 
 describe('Test Redux Store Configuration', () => {
   test('Toggle Items Correctly', () => {

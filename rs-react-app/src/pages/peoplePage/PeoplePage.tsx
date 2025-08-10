@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import PersonDetails from '../../components/personDetails';
 import SelectedItemsCounter from '../../components/selectedItemsCounter/SelectedItemsCounter';
 import { useDispatch, useSelector } from 'react-redux';
-import { unselectAllItems } from '../../features/selectedItemReducer';
+import { unselectAllItems } from '../../features/selectedItemReducer/selectedItemReducer';
 import type { RootState } from '../../app/store';
 
 export default function PeoplePage() {
