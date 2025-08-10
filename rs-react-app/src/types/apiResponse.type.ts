@@ -19,5 +19,4 @@ export type GetPeopleByLimit = {
 export type GetPeopleResponse = {
   results: PersonResult[];
   totalPages: number;
-  isSearch: boolean;
 };

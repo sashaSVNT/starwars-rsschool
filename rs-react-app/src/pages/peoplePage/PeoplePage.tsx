@@ -10,7 +10,7 @@ import SelectedItemsCounter from '../../components/selectedItemsCounter/Selected
 import { useDispatch, useSelector } from 'react-redux';
 import { unselectAllItems } from '../../features/selectedItemReducer/selectedItemReducer';
 import type { RootState } from '../../app/store';
-import { useGetPeopleQuery } from '../../features/api/api';
+import { api, useGetPeopleQuery } from '../../features/api/api';
 
 export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
@@ -19,7 +19,7 @@ export default function PeoplePage() {
   const navigate = useNavigate();
   const currentPage = Math.max(1, parseInt(pageParam));
   const dispatch = useDispatch();
-  const { data, isFetching } = useGetPeopleQuery({
+  const { data, isFetching, refetch } = useGetPeopleQuery({
     pageNumber: currentPage,
     searchWord: searchValue,
   });
@@ -64,6 +64,19 @@ export default function PeoplePage() {
         onSearchChange={setSearchValue}
         searchValue={searchValue}
       />
+      <div className={styles.apiBtnGroup}>
+        <button className={styles.apiIntegrationBtn} onClick={refetch}>
+          refetch
+        </button>
+        <button
+          className={styles.apiIntegrationBtn}
+          onClick={() =>
+            dispatch(api.util.invalidateTags([{ type: 'People', id: 'LIST' }]))
+          }
+        >
+          list invalidation
+        </button>
+      </div>
       <div className={styles.masterDetailView}>
         <CardsList
           data={people}

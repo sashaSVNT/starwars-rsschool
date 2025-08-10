@@ -15,6 +15,7 @@ type GetPeopleArgs = {
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://www.swapi.tech/api/' }),
+  tagTypes: ['People'],
   endpoints: (builder) => ({
     getPeople: builder.query<GetPeopleResponse, GetPeopleArgs>({
       query: ({ pageNumber, searchWord }) => {
@@ -31,20 +32,20 @@ export const api = createApi({
           return {
             results: res.result,
             totalPages: 1,
-            isSearch: true,
           };
         }
         return {
           results: res.results,
           totalPages: res.total_pages,
-          isSearch: false,
         };
       },
+      providesTags: [{ type: 'People', id: 'LIST' }],
     }),
     getPersonById: builder.query<PersonAttributes, string>({
       query: (id) => `people/${id}/`,
       transformResponse: (response: GetPersonByIdResponse) =>
         response.result.properties,
+      providesTags: (result, error, id) => [{ type: 'People', id }],
     }),
   }),
 });
