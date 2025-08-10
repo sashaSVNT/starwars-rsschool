@@ -1,12 +1,22 @@
 import type { PersonAttributes } from '../../types/personResult.type';
-import type { GetPersonByIdResponse } from './../../types/apiResponse.type';
+import type {
+  GetPeopleByLimit,
+  GetPeopleBySearchWord,
+  GetPeopleResponse,
+  GetPersonByIdResponse,
+} from './../../types/apiResponse.type';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+type GetPeopleArgs = {
+  pageNumber: number;
+  searchWord?: string;
+};
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://www.swapi.tech/api/' }),
   endpoints: (builder) => ({
-    getPeople: builder.query({
+    getPeople: builder.query<GetPeopleResponse, GetPeopleArgs>({
       query: ({ pageNumber, searchWord }) => {
         const limitOfRecords = 7;
         if (searchWord) {
@@ -14,11 +24,20 @@ export const api = createApi({
         }
         return `people?page=${pageNumber}&limit=${limitOfRecords}&expanded=true`;
       },
-      transformResponse: (res) => {
+      transformResponse: (
+        res: GetPeopleBySearchWord | GetPeopleByLimit
+      ): GetPeopleResponse => {
+        if ('result' in res) {
+          return {
+            results: res.result,
+            totalPages: 1,
+            isSearch: true,
+          };
+        }
         return {
-          results: res.result || res.results,
-          totalPages: res.total_pages ?? 1,
-          onSearch: Boolean(res.results),
+          results: res.results,
+          totalPages: res.total_pages,
+          isSearch: false,
         };
       },
     }),
@@ -30,4 +49,4 @@ export const api = createApi({
   }),
 });
 
-export const useGetPersonByIdQuery = api.endpoints.getPersonById.useQuery;
+export const { useGetPeopleQuery, useGetPersonByIdQuery } = api;

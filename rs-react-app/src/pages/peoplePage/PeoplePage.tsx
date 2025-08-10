@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './peoplePage.module.css';
-import { swapiService } from '../../services/swapiService';
-import type { PersonResult } from '../../types/personResult.type';
 import Search from '../../components/search';
 import CardsList from '../../components/cardsList';
 import useLocalStorage from '../../utils/useLocalStorage';
@@ -12,50 +10,34 @@ import SelectedItemsCounter from '../../components/selectedItemsCounter/Selected
 import { useDispatch, useSelector } from 'react-redux';
 import { unselectAllItems } from '../../features/selectedItemReducer/selectedItemReducer';
 import type { RootState } from '../../app/store';
+import { useGetPeopleQuery } from '../../features/api/api';
 
 export default function PeoplePage() {
   const { page: pageParam = '1', detailsId } = useParams();
-  const [people, setPeople] = useState<PersonResult[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [onSearchMode, setOnSearchMode] = useState(false);
   const [searchValue, setSearchValue, saveIntoLS] =
     useLocalStorage('searchValue');
-  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const currentPage = Math.max(1, parseInt(pageParam));
   const dispatch = useDispatch();
-
+  const { data, isFetching } = useGetPeopleQuery({
+    pageNumber: currentPage,
+    searchWord: searchValue,
+  });
+  const people = data?.results || [];
+  const totalPages = data?.totalPages || 1;
   const selectedItemsQuantity = useSelector(
     (state: RootState) => state.selectedItems.selectedIds
   ).length;
 
-  const fetchData = async () => {
-    setIsLoading(true);
+  useEffect(() => {
     if (isNaN(currentPage)) {
       navigate('/1');
-    } else {
-      try {
-        const response = await swapiService.getPeople(currentPage, searchValue);
-        setPeople(response.results);
-        setTotalPages(response.totalPages);
-        setOnSearchMode(response.onSearch);
-      } catch (error) {
-        console.error(error);
-        setPeople([]);
-      } finally {
-        setIsLoading(false);
-      }
     }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [currentPage]);
+  }, [currentPage, navigate]);
 
   const onSearchSubmit = async () => {
     const value = searchValue.trim();
     saveIntoLS(value);
-    fetchData();
     onPageChange(1);
   };
 
@@ -85,7 +67,7 @@ export default function PeoplePage() {
       <div className={styles.masterDetailView}>
         <CardsList
           data={people}
-          isLoading={isLoading}
+          isLoading={isFetching}
           onSelectPerson={onSelectPerson}
         />
         {detailsId && (
@@ -98,7 +80,7 @@ export default function PeoplePage() {
           unselectAll={unselectAll}
         />
       )}
-      {!isLoading && !onSearchMode && (
+      {!isFetching && totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
           onPageChange={onPageChange}
