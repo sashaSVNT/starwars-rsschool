@@ -9,7 +9,7 @@ import Pagination from '@/components/pagination';
 import PersonDetails from '@/components/personDetails';
 import SelectedItemsCounter from '@/components/selectedItemsCounter/SelectedItemsCounter';
 import { useDispatch, useSelector } from 'react-redux';
-import { unselectAllItems } from '@/features/selectedItemReducer/selectedItemReducer';
+import { unselectAllItems } from '@/features/selectedItemSlice/selectedItemSlice';
 import type { RootState } from '@/store/store';
 import { useGetPeopleQuery } from '@/features/api/api';
 import { useRouter } from '@/i18n/routing';
