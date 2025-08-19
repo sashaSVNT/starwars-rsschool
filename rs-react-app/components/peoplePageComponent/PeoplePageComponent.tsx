@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { unselectAllItems } from '@/features/selectedItemReducer/selectedItemReducer';
 import type { RootState } from '@/store/store';
 import { useGetPeopleQuery } from '@/features/api/api';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 
 type Props = {
   currentPage: number;
@@ -32,9 +32,9 @@ export default function PeoplePageComponent({ currentPage, detailsId }: Props) {
 
   const people = data?.results || [];
   const totalPages = data?.totalPages || 1;
-  const selectedItemsQuantity = useSelector(
+  const selectedIds = useSelector(
     (state: RootState) => state.selectedItems.selectedIds
-  ).length;
+  );
 
   const onSearchSubmit = async () => {
     const value = searchValue.trim();
@@ -75,9 +75,9 @@ export default function PeoplePageComponent({ currentPage, detailsId }: Props) {
           <PersonDetails id={detailsId} onCloseDetails={onCloseDetails} />
         )}
       </div>
-      {selectedItemsQuantity > 0 && (
+      {selectedIds.length > 0 && (
         <SelectedItemsCounter
-          quantity={selectedItemsQuantity}
+          selectedIds={selectedIds}
           unselectAll={unselectAll}
         />
       )}

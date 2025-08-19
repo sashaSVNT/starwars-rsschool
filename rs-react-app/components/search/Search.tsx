@@ -3,7 +3,9 @@
 import { type ChangeEvent, type FormEvent } from 'react';
 import styles from './search.module.css';
 import { useTheme } from '../../context/ThemeProvider';
-import { useRouter } from 'next/navigation';
+import LanguageSwitcher from '@/components/languageSwitcher';
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 type SearchProps = {
   onSearchChange: (value: string) => void;
@@ -16,8 +18,8 @@ export default function Search({
   onSearchSubmit,
   searchValue,
 }: SearchProps) {
-  const router = useRouter();
   const { theme, switchTheme } = useTheme();
+  const t = useTranslations('SearchComponent');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target instanceof HTMLInputElement) {
@@ -39,21 +41,19 @@ export default function Search({
         aria-label="Search form"
       >
         <input type="text" onChange={handleChange} value={searchValue} />
-        <button>Search</button>
+        <button>{t('searchButton')}</button>
       </form>
       <div className={styles.headerBtnGroup}>
+        <LanguageSwitcher />
         <button
           className={`${styles.headerBtn} ${styles.themeBtn}`}
           onClick={switchTheme}
         >
-          {theme}
+          {t(`${theme}`)}
         </button>
-        <button
-          className={styles.headerBtn}
-          onClick={() => router.push('/about')}
-        >
-          About
-        </button>
+        <Link href={'/about'} className={styles.headerBtn}>
+          {t('aboutButton')}
+        </Link>
       </div>
     </div>
   );
