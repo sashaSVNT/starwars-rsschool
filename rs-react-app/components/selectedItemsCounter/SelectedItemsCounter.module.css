@@ -7,9 +7,18 @@
   margin-bottom: 20px;
 }
 
-.selectedItemsBtn {
+.selectedItemsBtn,
+.downloadBtn {
   color: var(--text-color-secondary);
+  border-color: var(--border-color);
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
+}
+
+.selectedItemsBtn {
   background-color: red;
+}
+
+.downloadBtn {
+  background-color: var(--background-color);
 }

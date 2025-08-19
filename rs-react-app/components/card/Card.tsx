@@ -45,8 +45,8 @@ export default function Card(props: CardProps) {
           </thead>
           <tbody>
             <tr>
-              {Object.values(attributes).map((el) => (
-                <td className={styles.cardDetail} key={el}>
+              {Object.values(attributes).map((el, i) => (
+                <td className={styles.cardDetail} key={i}>
                   {el}
                 </td>
               ))}

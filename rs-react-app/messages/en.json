@@ -1,0 +1,29 @@
+{
+  "AboutPage": {
+    "position": "Developer",
+    "name": "Alexander Ilyushenko",
+    "location": "Brest, Belarus",
+    "description": "I am ambitious and strive to achieve my goals. I also want to finish this <link>wonderful course</link>",
+    "backButton": "← Back to Main"
+  },
+  "ErrorPage": {
+    "description": "The page was not found",
+    "backButton": "← Back to Main"
+  },
+  "Pagination": {
+    "prevButton": "Previous",
+    "nextButton": "Next",
+    "currOfTotal": "of"
+  },
+  "SearchComponent": {
+    "searchButton": "Search",
+    "aboutButton": "About",
+    "dark": "dark",
+    "light": "light"
+  },
+  "SelectedItemsCounter": {
+    "totalSelectedItems": "items are selected",
+    "unselectButton": "Unselect all",
+    "download": "Download"
+  }
+}

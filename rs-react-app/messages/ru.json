@@ -1,0 +1,29 @@
+{
+  "AboutPage": {
+    "position": "Разработчик",
+    "name": "Александр Ильюшенко",
+    "location": "Брест, Беларусь",
+    "description": "Я амбициозен и стремлюсь к достижению своих целей. Я также хочу закончить этот <link>замечательный курс</link>",
+    "backButton": "← На главную"
+  },
+  "ErrorPage": {
+    "description": "Страница не найдена",
+    "backButton": "← На главную"
+  },
+  "Pagination": {
+    "prevButton": "Назад",
+    "nextButton": "Вперед",
+    "currOfTotal": "из"
+  },
+  "SearchComponent": {
+    "searchButton": "Поиск",
+    "aboutButton": "О себе",
+    "dark": "темная",
+    "light": "светлая"
+  },
+  "SelectedItemsCounter": {
+    "totalSelectedItems": "персонажей выбрано",
+    "unselectButton": "Отменить выбор",
+    "download": "Скачать"
+  }
+}
