@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint .",
+    "deploy": "next build && next export && gh-pages -d out",
     "preview": "vite preview",
     "format:fix": "prettier --write .",
     "test": "vitest",
@@ -14,6 +16,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "next": "^15.4.6",
+    "next-intl": "^4.3.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",

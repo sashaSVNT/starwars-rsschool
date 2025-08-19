@@ -1,0 +1,8 @@
+.languageSwitcher {
+  padding: 3px 6px;
+  font-size: 16px;
+  border-radius: 4px;
+  color: var(--text-color-secondary);
+  border-color: var(--border-color);
+  background-color: var(--background-color);
+}
