@@ -45,7 +45,7 @@ export const api = createApi({
       query: (id) => `people/${id}/`,
       transformResponse: (response: GetPersonByIdResponse) =>
         response.result.properties,
-      providesTags: (_, __, id) => [{ type: 'People', id }],
+      providesTags: (_result, _error, id) => [{ type: 'People', id }],
     }),
   }),
 });

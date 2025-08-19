@@ -3,7 +3,7 @@ import selectedItemsReducer, {
   toggleItem,
   unselectAllItems,
   type SelectedItemsState,
-} from './selectedItemReducer';
+} from './selectedItemSlice';
 
 describe('Test SelectedItemsSlice', () => {
   const initialState: SelectedItemsState = {

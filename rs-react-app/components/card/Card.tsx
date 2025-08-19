@@ -2,7 +2,7 @@ import styles from './Card.module.css';
 import formatPersonAttribute from '@/utils/formatPersonAttribute';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/store/store';
-import { toggleItem } from '@/features/selectedItemReducer/selectedItemReducer';
+import { toggleItem } from '@/features/selectedItemSlice/selectedItemSlice';
 
 type CardProps = {
   id: string;
