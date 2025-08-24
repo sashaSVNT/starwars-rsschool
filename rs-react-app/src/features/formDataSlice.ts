@@ -1,21 +1,14 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { FormDataState } from '../types/formDataState';
 
-const initialState: FormDataState = {
-  isDataSet: false,
-  name: '',
-  age: 0,
-  email: '',
-  password: '',
-  gender: '',
-};
+const initialState: FormDataState[] = [];
 
 const formDataSlice = createSlice({
   name: 'formData',
   initialState,
   reducers: {
-    addFormData: (_state, action: PayloadAction<FormDataState>) => {
-      return action.payload;
+    addFormData: (state, action: PayloadAction<FormDataState>) => {
+      state.push(action.payload);
     },
   },
 });

@@ -31,11 +31,15 @@ function App() {
         </button>
       </div>
       <div className={styles.formDataContainer}>
-        {formData.isDataSet &&
-          Object.entries(formData).map(([key, value]) => (
-            <p key={key}>
-              {key}: {value}
-            </p>
+        {formData.length > 0 &&
+          formData.map((el) => (
+            <div key={el.name + el.age}>
+              {el.picture && <img src={el.picture} alt="Profile picture" />}
+              <p>Name: {el.name}</p>
+              <p>Age: {el.age}</p>
+              <p>Email: {el.email}</p>
+              <p>Country: {el.country}</p>
+            </div>
           ))}
       </div>
       {activeModal === 'uncontrolledForm' && (

@@ -1,8 +1,10 @@
 export type FormDataState = {
-  isDataSet: boolean;
   name: string;
   age: number;
   email: string;
   password: string;
   gender: string;
+  terms: boolean;
+  picture: string | null;
+  country: string;
 };
