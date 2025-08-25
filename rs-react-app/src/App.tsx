@@ -1,31 +1,33 @@
-import { useState } from 'react';
 import Modal from './components/modal';
 import UncontrolledForm from './components/uncontrolledForm/UncontrolledForm';
 import styles from './App.module.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from './app/store';
+import { openModal, closeModal } from './features/modalSlice';
 
 function App() {
-  const [activeModal, setActiveModal] = useState<
-    'uncontrolledForm' | 'reactHookForm' | 'none'
-  >('uncontrolledForm');
+  const activeModal = useSelector(
+    (state: RootState) => state.modal.activeModal
+  );
   const formData = useSelector((state: RootState) => state.formData);
+  const dispatch = useDispatch();
 
   const onCloseModal = () => {
-    setActiveModal('none');
+    dispatch(closeModal());
   };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.openFormGroup}>
         <button
           className={styles.openFormBtn}
-          onClick={() => setActiveModal('uncontrolledForm')}
+          onClick={() => dispatch(openModal('uncontrolledForm'))}
         >
           Uncontrolled form
         </button>
         <button
           className={styles.openFormBtn}
-          onClick={() => setActiveModal('reactHookForm')}
+          onClick={() => dispatch(openModal('reactHookForm'))}
         >
           React Hook Form
         </button>

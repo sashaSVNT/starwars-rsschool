@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { FormDataState } from '../types/formDataState';
+import type { FormDataState } from '../types/formDataState.type';
 
 const initialState: FormDataState[] = [];
 

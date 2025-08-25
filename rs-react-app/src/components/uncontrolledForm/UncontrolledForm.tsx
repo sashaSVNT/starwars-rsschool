@@ -1,9 +1,10 @@
 import { useRef, useState, type FormEvent } from 'react';
 import styles from './uncontrolledForm.module.css';
 import { addFormData } from '../../features/formDataSlice';
-import type { FormDataState } from '../../types/formDataState';
+import type { FormDataState } from '../../types/formDataState.type';
 import { useDispatch } from 'react-redux';
 import { COUNTRIES } from '../../app/countries';
+import Input from '../input';
 
 type Props = {
   onClose: () => void;
@@ -37,13 +38,13 @@ export default function UncontrolledForm({ onClose }: Props) {
       newErrors.email = 'Email is not valid';
     }
     if (!data.gender) {
-      newErrors.gender = 'Select a gender';
+      newErrors.gender = 'You must select a gender';
     }
     if (!data.terms) {
       newErrors.terms = 'You must accept the terms and conditions';
     }
     if (!data.country) {
-      newErrors.country = 'Select a country';
+      newErrors.country = 'You must select a country';
     }
     return newErrors;
   };
@@ -101,27 +102,27 @@ export default function UncontrolledForm({ onClose }: Props) {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className={styles.block}>
-        <label htmlFor="name" className={styles.lable}>
-          Name:
-        </label>
-        <input id="name" type="text" name="name" />
-        {errors.name && <p className={styles.errorMessage}>{errors.name}</p>}
-      </div>
-      <div className={styles.block}>
-        <label htmlFor="age" className={styles.lable}>
-          Age:
-        </label>
-        <input id="age" type="number" name="age" />
-        {errors.age && <p className={styles.errorMessage}>{errors.age}</p>}
-      </div>
-      <div className={styles.block}>
-        <label htmlFor="email" className={styles.lable}>
-          Email:
-        </label>
-        <input id="email" type="email" name="email" />
-        {errors.email && <p className={styles.errorMessage}>{errors.email}</p>}
-      </div>
+      <Input
+        id="name"
+        label="Name:"
+        name="name"
+        type="text"
+        errorMessage={errors.name}
+      />
+      <Input
+        id="age"
+        label="Age:"
+        name="age"
+        type="number"
+        errorMessage={errors.age}
+      />
+      <Input
+        id="email"
+        label="Email:"
+        name="email"
+        type="email"
+        errorMessage={errors.email}
+      />
       <div className={styles.block}>
         <label htmlFor="country">Country</label>
         <select id="country" name="country">
@@ -136,33 +137,26 @@ export default function UncontrolledForm({ onClose }: Props) {
           <p className={styles.errorMessage}>{errors.country}</p>
         )}
       </div>
-      <div className={styles.block}>
-        <label htmlFor="password" className={styles.lable}>
-          Password:
-        </label>
-        <input id="password" type="password" name="password" />
-        {errors.password && (
-          <p className={styles.errorMessage}>{errors.password}</p>
-        )}
-      </div>
-      <div className={styles.block}>
-        <label htmlFor="conf-password" className={styles.lable}>
-          Confirm password:
-        </label>
-        <input id="conf-password" type="password" name="conf-password" />
-        {errors.password && (
-          <p className={styles.errorMessage}>{errors.password}</p>
-        )}
-      </div>
-      <div className={styles.block}>
-        <label htmlFor="picture" className={styles.lable}>
-          Load profile picture:
-        </label>
-        <input id="picture" type="file" name="picture" />
-        {errors.picture && (
-          <p className={styles.errorMessage}>{errors.picture}</p>
-        )}
-      </div>
+      <Input
+        id="password"
+        label="Password:"
+        name="password"
+        type="password"
+        errorMessage={errors.password}
+      />
+      <Input
+        id="conf-password"
+        label="Confirm password:"
+        name="conf-password"
+        type="password"
+      />
+      <Input
+        id="picture"
+        label="Load profile picture:"
+        name="picture"
+        type="file"
+        errorMessage={errors.picture}
+      />
       <div className={styles.block}>
         <label htmlFor="age" className={styles.lable}>
           Gender:
@@ -182,13 +176,13 @@ export default function UncontrolledForm({ onClose }: Props) {
           <p className={styles.errorMessage}>{errors.gender}</p>
         )}
       </div>
-      <div className={styles.block}>
-        <label htmlFor="terms" className={styles.lable}>
-          I accept the Terms and Conditions
-        </label>
-        <input id="terms" type="checkbox" name="terms" />
-        {errors.terms && <p className={styles.errorMessage}>{errors.terms}</p>}
-      </div>
+      <Input
+        id="terms"
+        label="I accept the Terms and Conditions"
+        name="terms"
+        type="checkbox"
+        errorMessage={errors.terms}
+      />
       <button>Submit</button>
     </form>
   );

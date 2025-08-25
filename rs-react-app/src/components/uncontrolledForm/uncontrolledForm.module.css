@@ -1,21 +1,22 @@
 .block {
   position: relative;
-  padding: 10px;
-  display: flex;
-  align-items: center;
   gap: 20px;
-  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 10px;
 }
 
-.lable {
-  flex: 1;
+label {
+  font-family: 'Orbitron', sans-serif;
   text-align: end;
 }
 
-.block > input:not(input[type='radio']) {
-  padding: 6px;
-  width: 300px;
-}
-
 .errorMessage {
+  position: absolute;
+  bottom: -1.25rem;
+  left: 0;
+  right: 0;
+  height: 1.25rem;
+  overflow: hidden;
+  color: red;
+  font-size: 12px;
+  font-family: sans-serif;
 }
