@@ -4,6 +4,7 @@ import styles from './App.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from './app/store';
 import { openModal, closeModal } from './features/modalSlice';
+import ReactHookForm from './components/reactHookForm';
 
 function App() {
   const activeModal = useSelector(
@@ -44,9 +45,13 @@ function App() {
             </div>
           ))}
       </div>
-      {activeModal === 'uncontrolledForm' && (
+      {activeModal !== 'none' && (
         <Modal onClose={onCloseModal}>
-          <UncontrolledForm onClose={onCloseModal} />
+          {activeModal === 'uncontrolledForm' ? (
+            <UncontrolledForm onClose={onCloseModal} />
+          ) : (
+            <ReactHookForm onClose={onCloseModal} />
+          )}
         </Modal>
       )}
     </div>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.21% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>144/171</span>
+                <span class='fraction'>143/169</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.21% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>144/171</span>
+                <span class='fraction'>143/169</span>
             </div>
         
             
@@ -249,10 +249,7 @@
 <a name='L184'></a><a href='#L184'>184</a>
 <a name='L185'></a><a href='#L185'>185</a>
 <a name='L186'></a><a href='#L186'>186</a>
-<a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a>
-<a name='L190'></a><a href='#L190'>190</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L187'></a><a href='#L187'>187</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,7 +324,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -412,8 +408,6 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -446,7 +440,7 @@ import styles from './uncontrolledForm.module.css';
 import { addFormData } from '../../features/formDataSlice';
 import type { FormDataState } from '../../types/formDataState.type';
 import { useDispatch } from 'react-redux';
-import { COUNTRIES } from '../../app/countries';
+import { ASSERT_IMAGE_TYPES, COUNTRIES } from '../../constants';
 import Input from '../input';
 &nbsp;
 type Props = {
@@ -517,9 +511,8 @@ export default function UncontrolledForm({ onClose }: Props) {
 <span class="cstat-no" title="statement not covered" >      ) as HTMLInputElement;</span>
       if (fileInput &amp;&amp; fileInput.<span class="branch-0 cbranch-no" title="branch not covered" >files &amp;&amp; fileInput.files[0]) <span class="branch-0 cbranch-no" title="branch not covered" >{</span></span>
 <span class="cstat-no" title="statement not covered" >        const file = fileInput.files[0];</span>
-<span class="cstat-no" title="statement not covered" >        const pictureTypes = ['image/jpeg', 'image/png'];</span>
-<span class="cstat-no" title="statement not covered" >        if (!pictureTypes.includes(file.type)) {</span>
-<span class="cstat-no" title="statement not covered" >          setErrors({ picture: 'Input allows only png or jpeg' });</span>
+<span class="cstat-no" title="statement not covered" >        if (!ASSERT_IMAGE_TYPES.includes(file.type)) {</span>
+<span class="cstat-no" title="statement not covered" >          setErrors({ picture: 'Input allows only .png or .jpeg' });</span>
 <span class="cstat-no" title="statement not covered" >          return;</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 <span class="cstat-no" title="statement not covered" >        if (file.size &gt; 15 * 1024 ** 2) {</span>
@@ -546,29 +539,29 @@ export default function UncontrolledForm({ onClose }: Props) {
   return (
     &lt;form ref={formRef} onSubmit={handleSubmit}&gt;
       &lt;Input
-        id="name"
+        id="unc-name"
         label="Name:"
         name="name"
         type="text"
         errorMessage={errors.name}
       /&gt;
       &lt;Input
-        id="age"
+        id="unc-age"
         label="Age:"
         name="age"
         type="number"
         errorMessage={errors.age}
       /&gt;
       &lt;Input
-        id="email"
+        id="unc-email"
         label="Email:"
         name="email"
         type="email"
         errorMessage={errors.email}
       /&gt;
       &lt;div className={styles.block}&gt;
-        &lt;label htmlFor="country"&gt;Country&lt;/label&gt;
-        &lt;select id="country" name="country"&gt;
+        &lt;label htmlFor="unc-country"&gt;Country&lt;/label&gt;
+        &lt;select id="unc-country" name="country"&gt;
           &lt;option value=""&gt;Select a country:&lt;/option&gt;
           {COUNTRIES.map((country) =&gt; (
             &lt;option key={country} value={country}&gt;
@@ -581,29 +574,27 @@ export default function UncontrolledForm({ onClose }: Props) {
         )}
       &lt;/div&gt;
       &lt;Input
-        id="password"
+        id="unc-password"
         label="Password:"
         name="password"
         type="password"
         errorMessage={errors.password}
       /&gt;
       &lt;Input
-        id="conf-password"
+        id="unc-conf-password"
         label="Confirm password:"
         name="conf-password"
         type="password"
       /&gt;
       &lt;Input
-        id="picture"
+        id="unc-picture"
         label="Load profile picture:"
         name="picture"
         type="file"
         errorMessage={errors.picture}
       /&gt;
       &lt;div className={styles.block}&gt;
-        &lt;label htmlFor="age" className={styles.lable}&gt;
-          Gender:
-        &lt;/label&gt;
+        &lt;label className={styles.lable}&gt;Gender:&lt;/label&gt;
         &lt;div&gt;
           &lt;input type="radio" name="gender" value="male" /&gt;
           Male
@@ -620,7 +611,7 @@ export default function UncontrolledForm({ onClose }: Props) {
         )}
       &lt;/div&gt;
       &lt;Input
-        id="terms"
+        id="unc-terms"
         label="I accept the Terms and Conditions"
         name="terms"
         type="checkbox"
@@ -637,7 +628,7 @@ export default function UncontrolledForm({ onClose }: Props) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-25T21:42:08.372Z
+                at 2025-08-27T09:47:33.180Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

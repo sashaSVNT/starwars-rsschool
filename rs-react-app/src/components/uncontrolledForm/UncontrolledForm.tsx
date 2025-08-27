@@ -3,7 +3,7 @@ import styles from './uncontrolledForm.module.css';
 import { addFormData } from '../../features/formDataSlice';
 import type { FormDataState } from '../../types/formDataState.type';
 import { useDispatch } from 'react-redux';
-import { COUNTRIES } from '../../app/countries';
+import { ASSERT_IMAGE_TYPES, COUNTRIES } from '../../constants';
 import Input from '../input';
 
 type Props = {
@@ -74,9 +74,8 @@ export default function UncontrolledForm({ onClose }: Props) {
       ) as HTMLInputElement;
       if (fileInput && fileInput.files && fileInput.files[0]) {
         const file = fileInput.files[0];
-        const pictureTypes = ['image/jpeg', 'image/png'];
-        if (!pictureTypes.includes(file.type)) {
-          setErrors({ picture: 'Input allows only png or jpeg' });
+        if (!ASSERT_IMAGE_TYPES.includes(file.type)) {
+          setErrors({ picture: 'Input allows only .png or .jpeg' });
           return;
         }
         if (file.size > 15 * 1024 ** 2) {
@@ -103,29 +102,29 @@ export default function UncontrolledForm({ onClose }: Props) {
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
       <Input
-        id="name"
+        id="unc-name"
         label="Name:"
         name="name"
         type="text"
         errorMessage={errors.name}
       />
       <Input
-        id="age"
+        id="unc-age"
         label="Age:"
         name="age"
         type="number"
         errorMessage={errors.age}
       />
       <Input
-        id="email"
+        id="unc-email"
         label="Email:"
         name="email"
         type="email"
         errorMessage={errors.email}
       />
       <div className={styles.block}>
-        <label htmlFor="country">Country</label>
-        <select id="country" name="country">
+        <label htmlFor="unc-country">Country</label>
+        <select id="unc-country" name="country">
           <option value="">Select a country:</option>
           {COUNTRIES.map((country) => (
             <option key={country} value={country}>
@@ -138,29 +137,27 @@ export default function UncontrolledForm({ onClose }: Props) {
         )}
       </div>
       <Input
-        id="password"
+        id="unc-password"
         label="Password:"
         name="password"
         type="password"
         errorMessage={errors.password}
       />
       <Input
-        id="conf-password"
+        id="unc-conf-password"
         label="Confirm password:"
         name="conf-password"
         type="password"
       />
       <Input
-        id="picture"
+        id="unc-picture"
         label="Load profile picture:"
         name="picture"
         type="file"
         errorMessage={errors.picture}
       />
       <div className={styles.block}>
-        <label htmlFor="age" className={styles.lable}>
-          Gender:
-        </label>
+        <label className={styles.lable}>Gender:</label>
         <div>
           <input type="radio" name="gender" value="male" />
           Male
@@ -177,7 +174,7 @@ export default function UncontrolledForm({ onClose }: Props) {
         )}
       </div>
       <Input
-        id="terms"
+        id="unc-terms"
         label="I accept the Terms and Conditions"
         name="terms"
         type="checkbox"
