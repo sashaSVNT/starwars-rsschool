@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import styles from './reactHookForm.module.css';
-import { ASSERT_IMAGE_TYPES, COUNTRIES } from '../../constants';
-import { addFormData } from '../../features/formDataSlice';
+import { ASSERT_IMAGE_TYPES } from '../../constants';
+import { addFormData } from '../../features/formSlice';
 import { convertToBase64 } from '../../utils/convertToBase64';
+import type { RootState } from '../../app/store';
 
 type Props = {
   onClose: () => void;
@@ -49,6 +50,8 @@ type FormData = z.infer<typeof schema>;
 
 export default function ReactHookForm({ onClose }: Props) {
   const dispatch = useDispatch();
+  const countries = useSelector((state: RootState) => state.form.countries);
+
   const {
     handleSubmit,
     register,
@@ -194,7 +197,7 @@ export default function ReactHookForm({ onClose }: Props) {
           </label>
           <select id="unc-country" {...register('country')} autoComplete="on">
             <option value="">Select a country:</option>
-            {COUNTRIES.map((country) => (
+            {countries.map((country) => (
               <option key={country} value={country}>
                 {country}
               </option>

@@ -1,4 +1,4 @@
-export type FormDataState = {
+export type FormData = {
   name: string;
   age: number;
   email: string;

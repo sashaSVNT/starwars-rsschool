@@ -10,7 +10,7 @@ function App() {
   const activeModal = useSelector(
     (state: RootState) => state.modal.activeModal
   );
-  const formData = useSelector((state: RootState) => state.formData);
+  const formData = useSelector((state: RootState) => state.form.formData);
   const dispatch = useDispatch();
 
   const onCloseModal = () => {

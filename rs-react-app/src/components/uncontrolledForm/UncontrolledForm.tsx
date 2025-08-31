@@ -1,10 +1,11 @@
 import { useRef, useState, type FormEvent } from 'react';
 import styles from './uncontrolledForm.module.css';
-import { addFormData } from '../../features/formDataSlice';
-import type { FormDataState } from '../../types/formDataState.type';
-import { useDispatch } from 'react-redux';
-import { ASSERT_IMAGE_TYPES, COUNTRIES } from '../../constants';
+import { addFormData } from '../../features/formSlice';
+import type { FormData } from '../../types/formData.type';
+import { useDispatch, useSelector } from 'react-redux';
+import { ASSERT_IMAGE_TYPES } from '../../constants';
 import Input from '../input';
+import type { RootState } from '../../app/store';
 
 type Props = {
   onClose: () => void;
@@ -14,8 +15,9 @@ export default function UncontrolledForm({ onClose }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
   const dispatch = useDispatch();
+  const countries = useSelector((state: RootState) => state.form.countries);
 
-  const validateForm = (data: FormDataState) => {
+  const validateForm = (data: FormData) => {
     const newErrors: Record<string, string> = {};
 
     if (
@@ -53,7 +55,7 @@ export default function UncontrolledForm({ onClose }: Props) {
     e.preventDefault();
     if (formRef.current) {
       const formData = new FormData(formRef.current);
-      const data: FormDataState = {
+      const data: FormData = {
         name: formData.get('name') as string,
         age: Number(formData.get('age')),
         email: formData.get('email') as string,
@@ -126,7 +128,7 @@ export default function UncontrolledForm({ onClose }: Props) {
         <label htmlFor="unc-country">Country</label>
         <select id="unc-country" name="country">
           <option value="">Select a country:</option>
-          {COUNTRIES.map((country) => (
+          {countries.map((country) => (
             <option key={country} value={country}>
               {country}
             </option>
