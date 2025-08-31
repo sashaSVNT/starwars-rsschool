@@ -1,44 +1,62 @@
 import type { CountryType, CountryData } from '../../types';
 import styles from './countryList.module.css';
+import { getFieldLabel } from '../../utils/getFieldLabel';
 
 type Props = {
   data: CountryType;
   selectedYear: number;
+  selectedFields: string[];
 };
 
-export default function CountryList({ data, selectedYear }: Props) {
+export default function CountryList({
+  data,
+  selectedYear,
+  selectedFields,
+}: Props) {
+  const formatEmissionValue = (value: number | undefined): string => {
+    if (!value) return 'N/A';
+    return String(Math.round(value * 100) / 100);
+  };
+
   return (
     <div className={styles.countryList}>
-      {Object.entries(data).map(([countryName, countryInfo]) => (
-        <div key={countryName}>
-          <div>
-            {countryName}{' '}
-            {countryInfo.iso_code && <span>({countryInfo.iso_code})</span>}
+      {Object.entries(data).map(([countryName, countryInfo]) => {
+        const yearData = countryInfo.data.find(
+          (item) => item.year === selectedYear
+        );
+        if (!yearData) {
+          return;
+        }
+
+        return (
+          <div key={countryName}>
+            <div className={styles.countryHeader}>
+              <h3>{countryName}</h3>
+              {countryInfo.iso_code && <span>({countryInfo.iso_code})</span>}
+            </div>
+            <table className={styles.dataTable}>
+              <thead>
+                <tr>
+                  {selectedFields.map((field) => (
+                    <th key={field}>{getFieldLabel(field)}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {selectedFields.map((field) => (
+                    <td key={field}>
+                      {formatEmissionValue(
+                        yearData[field as keyof CountryData]
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Year</th>
-                <th>Population</th>
-                <th>CO2</th>
-                <th>CO2 per capita</th>
-              </tr>
-            </thead>
-            <tbody>
-              {countryInfo.data
-                .filter((el) => el.year === selectedYear)
-                .map((yearData: CountryData) => (
-                  <tr key={yearData.year}>
-                    <td>{yearData.year}</td>
-                    <td>{yearData.population ?? 'N/A'}</td>
-                    <td>{yearData.co2 ?? 'N/A'}</td>
-                    <td>{yearData.co2_per_capita ?? 'N/A'}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

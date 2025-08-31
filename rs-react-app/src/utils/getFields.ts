@@ -1,16 +1,15 @@
 import type { CountryType } from '../types';
-import { transformFieldKey } from './transformFieldKey';
 
 export const getFields = (data: CountryType) => {
-  const fields: Record<string, string> = {};
+  const fields = new Set<string>();
   Object.values(data).forEach((countryData) => {
     countryData.data.forEach((entry) => {
       Object.keys(entry).forEach((key) => {
-        if (!fields[key]) {
-          fields[key] = transformFieldKey(key);
+        if (key !== 'year') {
+          fields.add(key);
         }
       });
     });
   });
-  return fields;
+  return Array.from(fields);
 };

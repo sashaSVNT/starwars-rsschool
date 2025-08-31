@@ -7,12 +7,16 @@ import { getYears } from './utils/getYears';
 import { getFields } from './utils/getFields';
 import Modal from './components/modal';
 import SelectAdditionalColumns from './components/selectAdditionalColumns/SelectAdditionalColumns';
+import { SELECTED_FIELDS_BY_DEFAULT } from './constants';
 
 function App() {
   const [emissionsData, setEmissionsData] = useState<CountryType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedYear, setSelectedYear] = useState<number>();
-  const [allFields, setAllFields] = useState<Record<string, string>>({});
+  const [availableFields, setAvailableFields] = useState<string[]>([]);
+  const [selectedFields, setSelectedFields] = useState<string[]>(
+    SELECTED_FIELDS_BY_DEFAULT
+  );
   useEffect(() => {
     const fetchData = async () => {
       const data = await getEmissions();
@@ -21,7 +25,7 @@ function App() {
         const years = getYears(data);
         setSelectedYear(years[years.length - 1]);
         const fields = getFields(data);
-        setAllFields(fields);
+        setAvailableFields(fields);
       }
     };
     fetchData();
@@ -35,6 +39,10 @@ function App() {
     setIsModalOpen(true);
   };
 
+  const handleFieldsChange = (fields: string[]) => {
+    setSelectedFields(fields);
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.controlGroup}>
@@ -43,11 +51,20 @@ function App() {
         </button>
       </div>
       {emissionsData && selectedYear && (
-        <CountryList data={emissionsData} selectedYear={selectedYear} />
+        <CountryList
+          data={emissionsData}
+          selectedYear={selectedYear}
+          selectedFields={selectedFields}
+        />
       )}
       {isModalOpen && (
         <Modal onClose={onCloseModal}>
-          <SelectAdditionalColumns allFields={allFields} />
+          <SelectAdditionalColumns
+            allFields={availableFields}
+            selectedFields={selectedFields}
+            onFieldsChange={handleFieldsChange}
+            onClose={onCloseModal}
+          />
         </Modal>
       )}
     </div>

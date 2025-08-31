@@ -13,10 +13,10 @@
 }
 
 .modal {
-  min-width: 480px;
-  height: 400px;
+  background: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  background-color: white;
-  overflow: hidden;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
 }
