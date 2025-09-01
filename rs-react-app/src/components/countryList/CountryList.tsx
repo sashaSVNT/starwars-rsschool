@@ -1,6 +1,11 @@
-import type { CountryType, CountryData } from '../../types';
+import type {
+  CountryType,
+  CountryData,
+  SortByField,
+  SortDirection,
+} from '../../types';
 import styles from './countryList.module.css';
-import { getFieldLabel } from '../../utils/getFieldLabel';
+import { getSortedFieldLabel } from '../../utils/getFieldLabel';
 import { useEffect, useState } from 'react';
 
 type Props = {
@@ -8,6 +13,8 @@ type Props = {
   selectedYear: number;
   previousYear: number;
   selectedFields: string[];
+  sortByField: SortByField;
+  sortDirection: SortDirection;
 };
 
 export default function CountryList({
@@ -15,6 +22,8 @@ export default function CountryList({
   selectedYear,
   selectedFields,
   previousYear,
+  sortByField,
+  sortDirection,
 }: Props) {
   const [highlightedValues, setHighlightedValues] = useState<
     Record<string, string[]>
@@ -72,7 +81,13 @@ export default function CountryList({
               <thead>
                 <tr>
                   {selectedFields.map((field) => (
-                    <th key={field}>{getFieldLabel(field)}</th>
+                    <th key={field}>
+                      {getSortedFieldLabel(
+                        field,
+                        field === sortByField,
+                        sortDirection
+                      )}
+                    </th>
                   ))}
                 </tr>
               </thead>

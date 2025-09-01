@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.css';
 import { getEmissions } from './utils/getEmissions';
-import type { CountryType } from './types';
+import type { CountryType, SortByField, SortDirection } from './types';
 import CountryList from './components/countryList';
 import { getYears } from './utils/getYears';
 import { getFields } from './utils/getFields';
@@ -10,6 +10,7 @@ import SelectAdditionalColumns from './components/selectAdditionalColumns/Select
 import { SELECTED_FIELDS_BY_DEFAULT } from './constants';
 import SelectYear from './components/selectYear/SelectYear';
 import SearchComponent from './components/searchComponent';
+import SelectSortField from './components/selectSortField';
 
 function App() {
   const [emissionsData, setEmissionsData] = useState<CountryType | null>(null);
@@ -23,6 +24,8 @@ function App() {
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredData, setFilteredData] = useState<CountryType | null>(null);
+  const [sortByField, setSortByField] = useState<SortByField>('name');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +83,41 @@ function App() {
     });
   };
 
+  const onSortFieldChange = (field: SortByField) => {
+    setSortByField(field);
+  };
+
+  const onSortDirectionChange = (direction: SortDirection) => {
+    setSortDirection(direction);
+  };
+
+  const getSortedData = (data: CountryType): CountryType => {
+    if (!data) return {};
+
+    const entries = Object.entries(data);
+    const sortValues = entries.sort(([aName, aInfo], [bName, bInfo]) => {
+      let aValue: number | string;
+      let bValue: number | string;
+      if (sortByField === 'name') {
+        aValue = aName;
+        bValue = bName;
+      } else {
+        const aData = aInfo.data.find((el) => el.year === selectedYear);
+        const bData = bInfo.data.find((el) => el.year === selectedYear);
+        aValue = aData?.population || 0;
+        bValue = bData?.population || 0;
+      }
+
+      let sortDir = 0;
+      if (aValue < bValue) sortDir = -1;
+      if (aValue > bValue) sortDir = 1;
+      return sortDirection === 'asc' ? sortDir : -sortDir;
+    });
+
+    return Object.fromEntries(sortValues);
+  };
+  const sortedData = filteredData ? getSortedData(filteredData) : null;
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.controlGroup}>
@@ -92,13 +130,21 @@ function App() {
           onYearChange={handleYearChange}
         />
         <SearchComponent value={searchQuery} onChange={onSearchCountry} />
+        <SelectSortField
+          sortByField={sortByField}
+          sortDirection={sortDirection}
+          onSortFieldChange={onSortFieldChange}
+          onSortDirectionChange={onSortDirectionChange}
+        />
       </div>
-      {filteredData && selectedYear && (
+      {sortedData && selectedYear && (
         <CountryList
-          data={filteredData}
+          data={sortedData}
           selectedYear={selectedYear}
           selectedFields={selectedFields}
           previousYear={previousYear}
+          sortByField={sortByField}
+          sortDirection={sortDirection}
         />
       )}
       {isModalOpen && (

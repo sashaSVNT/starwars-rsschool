@@ -92,3 +92,6 @@ export type ProcessedCountry = {
   population: number | undefined;
   data: CountryData[];
 };
+
+export type SortByField = 'name' | 'population';
+export type SortDirection = 'asc' | 'desc';
