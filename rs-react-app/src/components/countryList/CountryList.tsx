@@ -6,7 +6,7 @@ import type {
 } from '../../types';
 import styles from './countryList.module.css';
 import { getSortedFieldLabel } from '../../utils/getFieldLabel';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 type Props = {
   data: CountryType;
@@ -17,7 +17,7 @@ type Props = {
   sortDirection: SortDirection;
 };
 
-export default function CountryList({
+function CountryList({
   data,
   selectedYear,
   selectedFields,
@@ -63,58 +63,53 @@ export default function CountryList({
 
   return (
     <div className={styles.countryList}>
-      {Object.entries(data).map(([countryName, countryInfo]) => {
-        const yearData = countryInfo.data.find(
-          (item) => item.year === selectedYear
-        );
-        if (!yearData) {
-          return;
-        }
-
-        return (
-          <div key={countryName}>
-            <div className={styles.countryHeader}>
-              <h3>{countryName}</h3>
-              {countryInfo.iso_code && <span>({countryInfo.iso_code})</span>}
-            </div>
-            <table className={styles.dataTable}>
-              <thead>
-                <tr>
-                  {selectedFields.map((field) => (
-                    <th key={field}>
-                      {getSortedFieldLabel(
-                        field,
-                        field === sortByField,
-                        sortDirection
+      <>{console.log(selectedFields)}</>
+      <table className={styles.dataTable}>
+        <thead>
+          <tr>
+            {['name'].concat(selectedFields).map((field) => (
+              <th key={field}>
+                {getSortedFieldLabel(
+                  field,
+                  field === sortByField,
+                  sortDirection
+                )}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(data).map(([countryName, countryInfo]) => {
+            const yearData = countryInfo.data.find(
+              (item) => item.year === selectedYear
+            );
+            if (!yearData) return;
+            return (
+              <tr>
+                <td key={countryName}>{countryName}</td>
+                {selectedFields.map((field) => {
+                  const isHighlighted =
+                    highlightedValues[countryName]?.includes(field);
+                  return (
+                    <td
+                      key={field}
+                      className={
+                        isHighlighted ? styles.isHighlighted : undefined
+                      }
+                    >
+                      {formatEmissionValue(
+                        yearData[field as keyof CountryData]
                       )}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {selectedFields.map((field) => {
-                    const isHighlighted =
-                      highlightedValues[countryName]?.includes(field);
-                    return (
-                      <td
-                        key={field}
-                        className={
-                          isHighlighted ? styles.isHighlighted : undefined
-                        }
-                      >
-                        {formatEmissionValue(
-                          yearData[field as keyof CountryData]
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        );
-      })}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
+
+export default memo(CountryList);

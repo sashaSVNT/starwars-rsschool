@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { SortByField, SortDirection } from '../../types';
 import styles from './selectSortField.module.css';
 
@@ -8,7 +9,7 @@ type Props = {
   onSortDirectionChange: (direction: SortDirection) => void;
 };
 
-export default function SelectSortField({
+function SelectSortField({
   sortByField,
   sortDirection,
   onSortFieldChange,
@@ -38,3 +39,5 @@ export default function SelectSortField({
     </div>
   );
 }
+
+export default memo(SelectSortField);

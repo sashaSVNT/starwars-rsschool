@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './searchComponent.module.css';
 
 type Props = {
@@ -5,7 +6,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export default function SearchComponent({ value, onChange }: Props) {
+function SearchComponent({ value, onChange }: Props) {
   return (
     <div className={styles.searchComponent}>
       <input
@@ -18,3 +19,5 @@ export default function SearchComponent({ value, onChange }: Props) {
     </div>
   );
 }
+
+export default memo(SearchComponent);

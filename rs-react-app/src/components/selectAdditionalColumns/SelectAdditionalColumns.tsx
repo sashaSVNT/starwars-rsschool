@@ -1,6 +1,6 @@
 import { getFieldLabel } from '../../utils/getFieldLabel';
 import styles from './selectAdditionalColumns.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 
 type Props = {
   allFields: string[];
@@ -9,7 +9,7 @@ type Props = {
   onClose: () => void;
 };
 
-export default function SelectAdditionalColumns({
+function SelectAdditionalColumns({
   allFields,
   selectedFields,
   onFieldsChange,
@@ -22,18 +22,21 @@ export default function SelectAdditionalColumns({
     setTempSelectedFields(selectedFields);
   }, [selectedFields]);
 
-  const handleToggleField = (field: string) => {
-    if (tempSelectedFields.includes(field)) {
-      setTempSelectedFields(tempSelectedFields.filter((el) => el !== field));
-    } else {
-      setTempSelectedFields([...tempSelectedFields, field]);
-    }
-  };
+  const handleToggleField = useCallback(
+    (field: string) => {
+      if (tempSelectedFields.includes(field)) {
+        setTempSelectedFields(tempSelectedFields.filter((el) => el !== field));
+      } else {
+        setTempSelectedFields([...tempSelectedFields, field]);
+      }
+    },
+    [tempSelectedFields]
+  );
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     onFieldsChange(tempSelectedFields);
     onClose();
-  };
+  }, [tempSelectedFields]);
 
   return (
     <div className={styles.selectColumns}>
@@ -67,3 +70,5 @@ export default function SelectAdditionalColumns({
     </div>
   );
 }
+
+export default memo(SelectAdditionalColumns);

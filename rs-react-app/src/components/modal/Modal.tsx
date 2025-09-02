@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useCallback, useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 
@@ -20,11 +20,12 @@ export default function Modal({ onClose, children }: Props) {
     };
   }, [onClose]);
 
-  const onOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onOverlayClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
-  };
+  }, []);
+
   return createPortal(
     <div className={styles.overlay} onClick={onOverlayClick}>
       <div className={styles.modal}>{children}</div>

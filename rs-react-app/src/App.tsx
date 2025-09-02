@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './App.module.css';
 import { getEmissions } from './utils/getEmissions';
 import type { CountryType, SortByField, SortDirection } from './types';
@@ -23,7 +23,6 @@ function App() {
     SELECTED_FIELDS_BY_DEFAULT
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [filteredData, setFilteredData] = useState<CountryType | null>(null);
   const [sortByField, setSortByField] = useState<SortByField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -37,18 +36,18 @@ function App() {
         setSelectedYear(years[years.length - 1]);
         const fields = getFields(data);
         setAvailableFields(fields);
-        setFilteredData(data);
       }
     };
     fetchData();
   }, []);
 
-  useEffect(() => {
+  useEffect(() => {});
+
+  const filteredData = useMemo(() => {
     if (!emissionsData) return;
 
     if (!searchQuery.trim()) {
-      setFilteredData(emissionsData);
-      return;
+      return emissionsData;
     }
     const query = searchQuery.trim().toLowerCase();
     const filteredByQuery: CountryType = {};
@@ -57,44 +56,13 @@ function App() {
         filteredByQuery[countryName] = countryInfo;
       }
     });
-    setFilteredData(filteredByQuery);
+    return filteredByQuery;
   }, [searchQuery, emissionsData]);
 
-  const onCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const sortedData = useMemo(() => {
+    if (!filteredData) return null;
 
-  const onOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleFieldsChange = (fields: string[]) => {
-    setSelectedFields(fields);
-  };
-
-  const onSearchCountry = (value: string) => {
-    setSearchQuery(value);
-  };
-
-  const handleYearChange = (year: number) => {
-    setSelectedYear((prevYear) => {
-      setPreviousYear(prevYear);
-      return year;
-    });
-  };
-
-  const onSortFieldChange = (field: SortByField) => {
-    setSortByField(field);
-  };
-
-  const onSortDirectionChange = (direction: SortDirection) => {
-    setSortDirection(direction);
-  };
-
-  const getSortedData = (data: CountryType): CountryType => {
-    if (!data) return {};
-
-    const entries = Object.entries(data);
+    const entries = Object.entries(filteredData);
     const sortValues = entries.sort(([aName, aInfo], [bName, bInfo]) => {
       let aValue: number | string;
       let bValue: number | string;
@@ -115,8 +83,51 @@ function App() {
     });
 
     return Object.fromEntries(sortValues);
-  };
-  const sortedData = filteredData ? getSortedData(filteredData) : null;
+  }, [filteredData, sortByField, sortDirection]);
+
+  const onCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, [isModalOpen]);
+
+  const onOpenModal = useCallback(() => {
+    setIsModalOpen(true);
+  }, [isModalOpen]);
+
+  const handleFieldsChange = useCallback((fields: string[]) => {
+    setSelectedFields(fields);
+    console.log(fields);
+  }, []);
+
+  const onSearchCountry = useCallback(
+    (value: string) => {
+      setSearchQuery(value);
+    },
+    [searchQuery]
+  );
+
+  const handleYearChange = useCallback(
+    (year: number) => {
+      setSelectedYear((prevYear) => {
+        setPreviousYear(prevYear);
+        return year;
+      });
+    },
+    [selectedYear]
+  );
+
+  const onSortFieldChange = useCallback(
+    (field: SortByField) => {
+      setSortByField(field);
+    },
+    [sortByField]
+  );
+
+  const onSortDirectionChange = useCallback(
+    (direction: SortDirection) => {
+      setSortDirection(direction);
+    },
+    [sortByField]
+  );
 
   return (
     <div className={styles.wrapper}>

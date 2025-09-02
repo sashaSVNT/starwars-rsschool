@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './selectYear.module.css';
 
 type Props = {
@@ -6,11 +7,7 @@ type Props = {
   onYearChange: (year: number) => void;
 };
 
-export default function SelectYear({
-  selectedYear,
-  years,
-  onYearChange,
-}: Props) {
+function SelectYear({ selectedYear, years, onYearChange }: Props) {
   return (
     <div className={styles.selectYear}>
       <label htmlFor="select-year">Select year</label>
@@ -29,3 +26,5 @@ export default function SelectYear({
     </div>
   );
 }
+
+export default memo(SelectYear);
