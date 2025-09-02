@@ -1,6 +1,6 @@
 import type { CountryType } from '../types';
 
-export async function getEmissions() {
+async function getEmissions() {
   try {
     const res = await fetch(
       'https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json'
@@ -12,6 +12,8 @@ export async function getEmissions() {
     return null;
   }
 }
+
+export const emissionsPromise = getEmissions();
 
 // src/utils/emissions-data.json
 // https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json

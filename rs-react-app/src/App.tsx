@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, use } from 'react';
 import styles from './App.module.css';
-import { getEmissions } from './utils/getEmissions';
+import { emissionsPromise } from './utils/getEmissions';
 import type { CountryType, SortByField, SortDirection } from './types';
 import CountryList from './components/countryList';
 import { getYears } from './utils/getYears';
@@ -13,13 +13,13 @@ import SearchComponent from './components/searchComponent';
 import SelectSortField from './components/selectSortField';
 
 function App() {
-  const [emissionsData, setEmissionsData] = useState<CountryType | null>(null);
+  const data = use(emissionsPromise);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedYear, setSelectedYear] = useState<number>(2023);
   const [previousYear, setPreviousYear] = useState<number>(2023);
   const [years, setYears] = useState<number[]>([]);
   const [availableFields, setAvailableFields] = useState<string[]>([]);
-  const [selectedFields, setSelectedFields] = useState<string[]>(
+  const [selectedFields, setSelectedFields] = useState(
     SELECTED_FIELDS_BY_DEFAULT
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -27,37 +27,28 @@ function App() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getEmissions();
-      if (data) {
-        setEmissionsData(data);
-        const years = getYears(data);
-        setYears(years);
-        setSelectedYear(years[years.length - 1]);
-        const fields = getFields(data);
-        setAvailableFields(fields);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {});
+    if (!data) return;
+    const years = getYears(data);
+    setYears(years);
+    const fields = getFields(data);
+    setAvailableFields(fields);
+  }, [data]);
 
   const filteredData = useMemo(() => {
-    if (!emissionsData) return;
+    if (!data) return;
 
     if (!searchQuery.trim()) {
-      return emissionsData;
+      return data;
     }
     const query = searchQuery.trim().toLowerCase();
     const filteredByQuery: CountryType = {};
-    Object.entries(emissionsData).forEach(([countryName, countryInfo]) => {
+    Object.entries(data).forEach(([countryName, countryInfo]) => {
       if (countryName.toLowerCase().includes(query)) {
         filteredByQuery[countryName] = countryInfo;
       }
     });
     return filteredByQuery;
-  }, [searchQuery, emissionsData]);
+  }, [searchQuery, data]);
 
   const sortedData = useMemo(() => {
     if (!filteredData) return null;
@@ -95,7 +86,6 @@ function App() {
 
   const handleFieldsChange = useCallback((fields: string[]) => {
     setSelectedFields(fields);
-    console.log(fields);
   }, []);
 
   const onSearchCountry = useCallback(
