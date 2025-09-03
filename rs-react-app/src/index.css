@@ -16,7 +16,6 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -27,7 +26,8 @@ h1 {
 }
 
 button {
-  border-radius: 6px;
+  background-color: transparent;
+  border-radius: 5px;
   border: 1px solid #000000;
   padding: 5px 12px;
   font-size: 1em;

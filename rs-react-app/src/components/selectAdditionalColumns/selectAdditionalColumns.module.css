@@ -1,5 +1,12 @@
 .selectColumns {
-  flex: 1;
+  padding-bottom: 50px;
+  height: 400px;
+  padding: 15px 15px 50px;
+}
+
+.columnsList {
+  height: 100%;
+  overflow-y: auto;
 }
 
 .selectColumnItem {
@@ -15,4 +22,10 @@
 .label {
   font-size: 16px;
   line-height: 16px;
+}
+
+.selectActions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }

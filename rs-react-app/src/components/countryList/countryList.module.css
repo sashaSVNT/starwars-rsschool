@@ -7,6 +7,7 @@
 
 .dataTable th {
   text-transform: uppercase;
+  background-color: #ffc43b;
 }
 
 .dataTable th,

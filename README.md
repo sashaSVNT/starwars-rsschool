@@ -23,3 +23,37 @@
 ### Add columns
 
 <img width="1025" height="616" alt="image" src="https://github.com/user-attachments/assets/2cfdff55-35f3-48e4-a109-539074194433" />
+
+## After optimization
+
+### Country search
+
+![COUNTRY_SEARCH_AFTER](./rs-react-app/src/assets/optimization/search-country-after.PNG)
+**committed at**: 2.8s
+**render**: 26.8ms
+**layout effects**: <0.1ms
+**passive effects**: 0.6ms
+
+### Year change
+
+![YEAR_CHANGE_AFTER](./rs-react-app/src/assets/optimization/select-year-after.PNG)
+**committed at**: 3.9s
+**render**: 142.4ms
+**layout effects**: <0.1ms
+**passive effects**: 2.4ms
+
+### Sorting
+
+![SORTING_AFTER](./rs-react-app/src/assets/optimization/search-country-after.PNG)
+**committed at**: 1.4s
+**render**: 197.8ms
+**layout effects**: <0.1ms
+**passive effects**: 3.1ms
+
+### Add columns
+
+![SEARCH_COUNTRY_AFTER](./rs-react-app/src/assets/optimization/select-field-after.PNG)
+**committed at**: 4.3s
+**render**: 149.1ms
+**layout effects**: <0.1ms
+**passive effects**: <0.1ms
