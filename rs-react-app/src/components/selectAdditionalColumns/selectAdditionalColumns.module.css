@@ -1,0 +1,31 @@
+.selectColumns {
+  padding-bottom: 50px;
+  height: 400px;
+  padding: 15px 15px 50px;
+}
+
+.columnsList {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.selectColumnItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  input {
+    margin: 0;
+    cursor: pointer;
+  }
+}
+
+.label {
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.selectActions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,22 @@
+.dataTable {
+  width: 100%;
+  font-size: 14px;
+  border: 1px solid #656565;
+  border-collapse: collapse;
+}
+
+.dataTable th {
+  text-transform: uppercase;
+  background-color: #ffc43b;
+}
+
+.dataTable th,
+.dataTable td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #656565;
+}
+
+.isHighlighted {
+  background-color: #ffff90;
+}
